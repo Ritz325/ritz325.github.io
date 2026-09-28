@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matemáticas · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#284652;background:#e9f8fa;font-synthesis:none;--navy:#294654;--navy-deep:#1c3947;--cyan:#008c9c;--orange:#ef7b24;--paper:#fffefa;--line:#c8d9dc}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;background:#e9f8fa}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    button,a,input,select{touch-action:manipulation}
+    :focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+    .app{min-height:100vh;display:grid;grid-template-columns:224px minmax(0,1fr)}
+    .sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:22px 14px 16px;background:var(--navy);color:#effbfc}
+    .wordmark{padding:0 13px 19px;border-bottom:1px solid rgba(255,255,255,.25);font-size:1.45rem;font-weight:800;line-height:.9;letter-spacing:.4px}
+    .wordmark span{display:block;color:#20b9c4;font-size:1.65rem}
+    .nav-label{margin:18px 10px 7px;color:#afc4c9;font-size:.76rem;font-weight:800;text-transform:uppercase}
+    .side-nav{display:grid;gap:5px}
+    .side-nav a{min-height:40px;display:flex;align-items:center;gap:9px;padding:7px 11px;border-radius:7px;color:#edf9fa;font-size:.9rem;font-weight:800}
+    .side-nav a:hover{background:#3b6372}
+    .side-nav a[aria-current=page]{background:var(--orange);color:white}
+    .sidebar-bottom{display:flex;align-items:center;gap:10px;margin-top:auto;padding:12px 8px 3px;border-top:1px solid rgba(255,255,255,.25)}
+    .mentor-avatar{width:42px;height:42px;flex:none;background:#eff5f5;border:1px solid #a5bdc2;border-radius:9px;background-position:center;background-size:contain;background-repeat:no-repeat}
+    .mentor-avatar.zorro-spark{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;border-color:#fff0d2}
+    .user-copy{min-width:0;display:grid;line-height:1.15}
+    .user-copy strong,.user-copy span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .user-copy strong{font-size:.85rem}.user-copy span{color:#b9d0d5;font-size:.75rem}
+    .workspace{min-width:0;padding:18px 22px 24px}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}
+    .heading h1{margin:0;font-size:1.65rem;line-height:1.05}
+    .heading p{margin:3px 0 0;color:#527482;font-size:.86rem;font-weight:700}
+    .top-actions{display:flex;align-items:center;gap:8px}
+    .mentor-pill,.streak-pill{display:flex;align-items:center;gap:7px;padding:6px 10px;background:#dff8ff;border:1px solid #b9e0e6;border-radius:7px;color:#008c9c;font-size:.82rem;font-weight:800;white-space:nowrap}
+    .mentor-pill .mentor-avatar{width:27px;height:27px;border:0}
+    .streak-pill{background:#fff0d2;border-color:#f6d6a7;color:#b5551c}
+    .icon-button{width:36px;height:36px;display:grid;place-items:center;background:#fffefa;border:1px solid var(--line);border-radius:7px;cursor:pointer}
+    .task-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+    .filters{display:flex;gap:5px}
+    .filter{min-height:34px;padding:5px 14px;border:1px solid transparent;border-radius:99px;background:#fffefa;color:#70878c;font-size:.83rem;font-weight:800;cursor:pointer;box-shadow:0 2px 3px rgba(37,72,84,.1)}
+    .filter[aria-pressed=true]{background:#303ce4;color:white}
+    .toolbar-spacer{flex:1}
+    .search{width:min(190px,26vw);min-height:34px;padding:5px 10px;border:1px solid var(--line);border-radius:7px;background:#fffefa;font-size:.85rem}
+    .primary-button{min-height:36px;padding:6px 12px;border:0;border-radius:7px;background:#303ce4;color:white;font-size:.84rem;font-weight:800;cursor:pointer}
+    .primary-button:hover{background:#242fca}
+    .task-board{overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:9px;box-shadow:0 3px 8px rgba(36,72,84,.07)}
+    .task-head,.task-row{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(100px,.85fr) minmax(90px,.7fr) minmax(76px,.6fr) minmax(105px,.75fr);align-items:center;gap:10px;padding:9px 14px}
+    .task-head{min-height:39px;background:#f8fcfc;border-bottom:1px solid var(--line);color:#819297;font-size:.77rem;font-weight:800}
+    .task-row{min-height:50px;border-bottom:1px solid #e5edef;color:#435d65;font-size:.83rem;font-weight:700}
+    .task-row:last-child{border-bottom:0}
+    .task-row:hover{background:#f6fbfc}
+    .task-title{min-width:0;display:flex;align-items:center;gap:9px}
+    .task-title-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .task-title-text.done{text-decoration:line-through;color:#8a9b9e}
+    .task-check{width:19px;height:19px;flex:none;accent-color:#0c9a63;cursor:pointer}
+    .task-subject{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .task-date{font-size:.8rem;white-space:nowrap}
+    .priority{justify-self:start;padding:2px 9px;border-radius:99px;font-size:.7rem;font-weight:800}
+    .priority.alta{background:#ffdfbf;color:#d9681d}.priority.media{background:#e7e3ff;color:#6352bd}.priority.baja{background:#d9f1e1;color:#42804c}
+    .status{justify-self:end;padding:3px 8px;border-radius:99px;background:#e3f2de;color:#44833e;font-size:.68rem;font-weight:800}
+    .status.pending{background:#edf0f0;color:#778589}
+    .empty-row{padding:28px;text-align:center;color:#71868c;font-size:.88rem}
+    .below-grid{display:grid;grid-template-columns:minmax(250px,1fr) minmax(0,1fr);gap:14px;margin-top:12px}
+    .panel{min-width:0;padding:13px 14px;background:var(--paper);border:1px solid var(--line);border-radius:9px;box-shadow:0 3px 8px rgba(36,72,84,.06)}
+    .panel h2{margin:0 0 9px;color:#455e65;font-size:.96rem}
+    .quick-form{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .quick-form input,.quick-form select{width:100%;min-height:34px;padding:5px 9px;border:1px solid #ccd7d9;border-radius:6px;background:#f4f4f4;color:#40575f;font-size:.78rem}
+    .quick-form input:first-child{grid-column:1/-1}
+    .quick-form button{min-height:34px;padding:5px 10px;border:0;border-radius:6px;background:#303ce4;color:white;font-size:.79rem;font-weight:800;cursor:pointer}
+    .summary-list{display:grid;gap:6px}
+    .summary-line{display:flex;align-items:center;justify-content:space-between;gap:9px;color:#75888c;font-size:.79rem;font-weight:700}
+    .summary-line strong{color:#1d333b;font-size:.95rem}
+    .progress-track{height:10px;margin-top:2px;overflow:hidden;background:#dce1e1;border-radius:99px}
+    .progress-fill{height:100%;width:0;background:#68d2a0;border-radius:inherit;transition:width .25s}
+    .study-panel{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:14px 16px;background:#294654;border-radius:9px;color:white}
+    .study-panel h2{margin:0;color:white;font-size:1rem}
+    .study-panel p{margin:3px 0 0;color:#c8e0e4;font-size:.79rem}
+    .study-panel a{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:39px;padding:7px 13px;border-radius:7px;background:var(--orange);color:white;font-size:.86rem;font-weight:800}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:10;padding:10px 14px;border-radius:8px;background:#294654;color:#fff;box-shadow:0 5px 20px #122d3a33}
+    .toast[hidden]{display:none}
+    dialog{width:min(100% - 28px,400px);padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:#284652;box-shadow:0 15px 45px #112b3b45}
+    dialog::backdrop{background:#142d3b77}
+    dialog h2{margin:0 0 12px}
+    .dialog-actions{display:flex;justify-content:end;gap:8px;margin-top:16px}
+    .dialog-actions button{min-height:36px;padding:6px 12px;border:0;border-radius:6px;font-weight:800;cursor:pointer}
+    .cancel{background:#e9eeee;color:#40565d}.save{background:#303ce4;color:white}
+    @media(max-width:960px){.app{grid-template-columns:180px minmax(0,1fr)}.workspace{padding:15px}.task-head,.task-row{grid-template-columns:minmax(0,1.5fr) minmax(78px,.8fr) minmax(82px,.7fr) 68px 91px;gap:7px;padding-inline:10px}.below-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){.app{display:block}.sidebar{position:static;width:100%;height:auto;display:grid;grid-template-columns:1fr;gap:8px;padding:10px 12px}.wordmark{padding:0 4px 9px;border:0;font-size:1rem;line-height:1}.wordmark span{display:inline;color:#20b9c4;font-size:1.1rem}.nav-label{display:none}.side-nav{display:flex;overflow:auto;gap:5px}.side-nav a{flex:none;min-height:35px;padding:6px 10px;font-size:.79rem}.sidebar-bottom{display:none}.workspace{padding:12px}.topline{align-items:flex-start}.heading h1{font-size:1.4rem}.heading p{max-width:250px;font-size:.78rem}.top-actions{gap:5px}.mentor-pill{padding:4px 6px;font-size:.72rem}.mentor-pill .mentor-avatar{width:23px;height:23px}.streak-pill{display:none}.task-toolbar{flex-wrap:wrap}.filters{max-width:100%;overflow:auto}.filter{padding-inline:10px;white-space:nowrap}.toolbar-spacer{display:none}.search{flex:1;width:auto;min-width:120px}.task-head{display:none}.task-board{display:grid;gap:0}.task-row{grid-template-columns:minmax(0,1fr) auto;gap:6px 9px;padding:10px 11px}.task-title{grid-column:1}.task-subject{grid-column:1;grid-row:2;padding-left:28px;font-size:.75rem}.task-date{grid-column:2;grid-row:1;justify-self:end;font-size:.74rem}.priority{grid-column:2;grid-row:2;justify-self:end}.status{grid-column:2;grid-row:3;justify-self:end}.below-grid{grid-template-columns:1fr}.study-panel{align-items:flex-start;flex-direction:column}.study-panel a{width:100%}}
+    @media(prefers-reduced-motion:reduce){.progress-fill{transition:none}}
+    .app{display:block;min-height:100vh}
+    .top-nav{position:sticky;z-index:8;top:0;display:flex;align-items:center;gap:22px;padding:10px max(20px,calc((100vw - 1240px)/2));background:var(--navy);color:#f3fcfd;box-shadow:0 4px 0 rgba(18,49,60,.18)}
+    .wordmark{flex:none;padding:0;border:0;font-size:1.05rem;line-height:1;white-space:nowrap}.wordmark span{display:inline;margin-left:3px;font-size:1.1rem}
+    .game-nav{display:flex;align-items:center;gap:5px;min-width:0}
+    .game-nav a{display:flex;align-items:center;gap:6px;min-height:38px;padding:6px 12px;border-radius:8px;color:#e9f8fa;font-size:.86rem;font-weight:800;white-space:nowrap}
+    .game-nav a:hover{background:#3b6372}.game-nav a[aria-current=page]{background:var(--orange);color:#fff;box-shadow:0 3px 0 #b85618}
+    .nav-user{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .nav-user-name{display:grid;max-width:120px;font-size:.78rem;font-weight:800;line-height:1.05}.nav-user-name span{overflow:hidden;color:#bfe3e8;text-overflow:ellipsis;white-space:nowrap;font-size:.68rem}
+    .nav-user .mentor-avatar{width:34px;height:34px;border-color:#fff0d2}
+    .nav-streak,.nav-profile{min-height:34px;display:flex;align-items:center;justify-content:center;padding:5px 9px;border:1px solid #ffffff35;border-radius:8px;background:#345969;color:#fff;font-size:.78rem;font-weight:800;white-space:nowrap}
+    .nav-streak{background:#fff0d2;border-color:#f6d6a7;color:#b5551c}.nav-profile:hover{background:#3f6a7a}
+    .workspace{width:min(100% - 40px,1180px);margin:0 auto;padding:22px 0 32px}
+    .world-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;margin-bottom:15px;padding:20px 23px;background:linear-gradient(115deg,#dff8ff 0%,#effcff 62%,#fff0d2 100%);border:2px solid #b6dfe7;border-radius:13px;box-shadow:0 5px 0 rgba(41,70,84,.1)}
+    .world-hero::after{content:"";position:absolute;right:24%;top:-50px;width:145px;height:145px;border:16px solid #38b6f022;border-radius:50%;pointer-events:none}
+    .hero-copy{position:relative;z-index:1;min-width:0}.chapter-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;background:#fff0d2;color:#b65a1e;font-size:.72rem;font-weight:800;text-transform:uppercase}
+    .world-hero h1{margin:5px 0 1px;color:#294654;font-size:clamp(1.5rem,3vw,2.05rem);line-height:1.05}.world-hero p{margin:4px 0 10px;color:#527482;font-weight:700}
+    .quest-progress{width:min(380px,55vw);display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center;color:#486871;font-size:.76rem;font-weight:800}.quest-progress strong{color:#087e98}.quest-track{grid-column:1/-1;height:9px;overflow:hidden;border:1px solid #b8d6dc;border-radius:99px;background:#fff}.quest-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#68d2a0,#0c91a3);transition:width .25s}
+    .hero-play{position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:8px;min-height:48px;padding:8px 14px;border:2px solid #b85618;border-radius:9px;background:var(--orange);color:#fff;font-weight:800;box-shadow:0 4px 0 #b85618;transition:transform .15s}.hero-play:hover{transform:translateY(-2px)}
+    .dashboard-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(285px,.78fr);align-items:start;gap:14px}
+    .right-rail{display:grid;gap:12px}.dashboard-grid #tasks{min-width:0}
+    .task-board{border-width:2px;border-radius:11px}.task-row{min-height:54px}.task-check{width:21px;height:21px}
+    .task-toolbar{flex-wrap:wrap}.filters{padding:3px;border-radius:99px;background:#dceef0}.filter{box-shadow:none}.filter[aria-pressed=true]{background:#303ce4;box-shadow:0 2px 0 #202cae}
+    .panel{border-width:2px;border-radius:11px;box-shadow:0 4px 0 rgba(36,72,84,.07)}.panel h2{font-size:1rem}
+    .quick-form{grid-template-columns:1fr}.quick-form input:first-child{grid-column:auto}.quick-form button{min-height:38px}
+    .summary-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.summary-line{min-height:62px;align-items:flex-start;justify-content:center;flex-direction:column;padding:8px;border-radius:8px;background:#dff8ff}.summary-line:nth-child(2){background:#ffedda}.summary-line:nth-child(3){background:#e8e0ff}.summary-line:nth-child(4){background:#dff1dc}.summary-line:nth-child(5){background:#fff0d2}.summary-line:nth-child(6){background:#e5f2f4}.summary-line span{font-size:.7rem}.summary-line strong{font-size:1.05rem}.progress-track{grid-column:1/-1;height:12px}
+    .study-panel{margin-top:14px;border:2px solid #1c3947;border-radius:11px;box-shadow:0 5px 0 rgba(28,57,71,.12)}.study-panel a{box-shadow:0 3px 0 #b85618}.study-panel a:hover{transform:translateY(-1px)}
+    @media(max-width:900px){.top-nav{flex-wrap:wrap;gap:8px 14px;padding:9px 16px}.game-nav{order:3;flex:1 1 100%;overflow-x:auto}.nav-user{margin-left:auto}.workspace{width:min(100% - 32px,760px);padding-top:16px}.dashboard-grid{grid-template-columns:1fr}.right-rail{grid-template-columns:1fr 1fr}.quick-form{grid-template-columns:1fr 1fr}.quick-form input:first-child{grid-column:1/-1}}
+    @media(max-width:600px){.top-nav{gap:7px;padding:8px 10px}.wordmark{font-size:.95rem}.wordmark span{font-size:1rem}.game-nav a{min-height:34px;padding:5px 9px;font-size:.77rem}.nav-user{gap:5px}.nav-user-name{display:none}.nav-user .mentor-avatar{width:30px;height:30px}.nav-streak,.nav-profile{min-height:30px;padding:4px 7px;font-size:.7rem}.workspace{width:calc(100% - 22px);padding:13px 0 24px}.world-hero{align-items:flex-start;flex-direction:column;gap:12px;padding:16px}.world-hero::after{right:-30px;top:-47px}.world-hero p{font-size:.88rem}.quest-progress{width:100%}.hero-play{width:100%;justify-content:center}.right-rail{grid-template-columns:1fr}.quick-form{grid-template-columns:1fr 1fr}.quick-form input:first-child{grid-column:1/-1}.task-toolbar{gap:7px}.task-row{min-height:62px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top-nav">
+      <a class="wordmark" href="index.html">STUDY <span>PLAY</span></a>
+      <nav class="game-nav" aria-label="Navegación del juego">
+        <a href="index.html#map">🗺️ Mapa</a>
+        <a href="#tasks" aria-current="page">🔢 Matemáticas</a>
+        <a href="estudio.html?materia=matematicas">⏱ Sala Pomodoro</a>
+      </nav>
+      <div class="nav-user">
+        <span class="mentor-avatar" id="navMentorAvatar" aria-hidden="true"></span>
+        <span class="nav-user-name"><strong id="navUserName">Invitado</strong><span id="mentorName">Sin mentor</span></span>
+        <span class="nav-streak" id="streak">🔥 0 días</span>
+        <a class="nav-profile" href="perfil.html">Perfil ↗</a>
+      </div>
+    </header>
+    <main class="workspace">
+      <section class="world-hero" aria-labelledby="subjectTitle">
+        <div class="hero-copy">
+          <span class="chapter-tag">⭐ Mundo 02 · Nueva misión</span>
+          <h1 id="subjectTitle">Zona de Matemáticas</h1>
+          <p>Completa tus retos y gana experiencia para subir de nivel.</p>
+          <div class="quest-progress"><span>Misiones completadas</span><strong id="heroProgress">1 de 4 · 25%</strong><div class="quest-track"><div class="quest-fill" id="heroFill"></div></div></div>
+        </div>
+        <a class="hero-play" href="estudio.html?materia=matematicas">⏱ Entrenar con Pomodoro</a>
+      </section>
+      <div class="dashboard-grid">
+        <section id="tasks" aria-label="Tareas de Matemáticas">
+          <div class="task-toolbar">
+            <div class="filters" role="group" aria-label="Filtrar tareas"><button class="filter" type="button" data-filter="all" aria-pressed="true">Todas</button><button class="filter" type="button" data-filter="pending" aria-pressed="false">Pendientes</button><button class="filter" type="button" data-filter="completed" aria-pressed="false">Completadas</button></div>
+            <span class="toolbar-spacer"></span><input class="search" id="searchTasks" type="search" placeholder="⌕ Buscar reto" aria-label="Buscar tarea"><button class="primary-button" type="button" id="openTaskDialog">＋ Nueva tarea</button>
+          </div>
+          <div class="task-board">
+            <div class="task-head"><span>Misión</span><span>Área</span><span>Fecha límite</span><span>Prioridad</span><span>Estado</span></div>
+            <div id="taskList" aria-live="polite"></div>
+          </div>
+        </section>
+        <div class="right-rail">
+          <section class="panel" aria-labelledby="quickTitle">
+            <h2 id="quickTitle">＋ Añadir una misión</h2>
+            <form class="quick-form" id="quickTaskForm"><input name="title" placeholder="¿Qué reto vas a completar?" aria-label="Nombre de la tarea" required maxlength="90"><input name="due" type="date" aria-label="Fecha límite"><select name="priority" aria-label="Prioridad"><option value="media">Prioridad media</option><option value="alta">Prioridad alta</option><option value="baja">Prioridad baja</option></select><button type="submit">Guardar misión</button></form>
+          </section>
+          <section class="panel" aria-labelledby="summaryTitle">
+            <h2 id="summaryTitle">🏆 Tu avance</h2>
+            <div class="summary-list"><div class="summary-line"><span>Retos totales</span><strong id="totalTasks">0</strong></div><div class="summary-line"><span>Completados</span><strong id="completedTasks">0</strong></div><div class="summary-line"><span>Por completar</span><strong id="pendingTasks">0</strong></div><div class="summary-line"><span>Tiempo de estudio</span><strong id="studyHours">0 min</strong></div><div class="summary-line"><span>Sesiones Pomodoro</span><strong id="studySessions">0</strong></div><div class="summary-line"><span>Progreso</span><strong id="progressLabel">0%</strong></div><div class="progress-track" role="progressbar" aria-label="Misiones completadas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progressFill"></div></div></div>
+          </section>
+        </div>
+      </div>
+      <section class="study-panel" aria-label="Sesiones de estudio">
+        <div><h2>🚀 ¿Listo para otra ronda?</h2><p>Entra a la sala Pomodoro y suma tiempo de estudio a esta zona.</p></div>
+        <a href="estudio.html?materia=matematicas">Ir a la sala de estudio →</a>
+      </section>
+    </main>
+  </div>
+  <dialog id="taskDialog"><form method="dialog" id="taskDialogForm"><h2>Nueva tarea</h2><div class="form-field"><label for="dialogTitle">Nombre de la tarea</label><input id="dialogTitle" name="title" maxlength="90" required></div><div class="form-field"><label for="dialogDue">Fecha límite</label><input id="dialogDue" name="due" type="date"></div><div class="form-field"><label for="dialogPriority">Prioridad</label><select id="dialogPriority" name="priority"><option value="alta">Alta</option><option value="media" selected>Media</option><option value="baja">Baja</option></select></div><div class="dialog-actions"><button class="cancel" value="cancel">Cancelar</button><button class="save" id="saveDialogTask" value="default">Crear tarea</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script>
+    const user = (() => { try { return JSON.parse(localStorage.getItem("studyPlayUser") || "null"); } catch { return null; } })();
+    const owner = (user?.email || user?.nombre || "guest").toLowerCase();
+    const taskKey = `studyPlayTasks:matematicas:${owner}`;
+    const studyKey = `studyPlayStudy:matematicas:${owner}`;
+    const seedTasks = [
+      { id: "m1", title: "Práctica: ecuaciones lineales", subject: "Álgebra", due: "", priority: "alta", completed: false },
+      { id: "m2", title: "Ejercicios de cálculo", subject: "Cálculo", due: "", priority: "alta", completed: false },
+      { id: "m3", title: "Laboratorio de fracciones", subject: "Aritmética", due: "", priority: "media", completed: true },
+      { id: "m4", title: "Lectura: geometría básica", subject: "Geometría", due: "", priority: "media", completed: false }
+    ];
+    let tasks;
+    try { tasks = JSON.parse(localStorage.getItem(taskKey) || "null") || seedTasks; } catch { tasks = seedTasks; }
+    let filter = "all";
+    let toastTimer;
+
+    const formatDate = value => {
+      if (!value) return "Sin fecha";
+      const date = new Date(`${value}T12:00:00`);
+      return new Intl.DateTimeFormat("es", { day: "numeric", month: "short" }).format(date);
+    };
+    const persistTasks = () => localStorage.setItem(taskKey, JSON.stringify(tasks));
+    const showToast = message => {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.hidden = true; }, 2500);
+    };
+
+    function renderTasks() {
+      const query = document.getElementById("searchTasks").value.trim().toLocaleLowerCase("es");
+      const visible = tasks.filter(task => {
+        const matchesFilter = filter === "all" || (filter === "pending" ? !task.completed : task.completed);
+        return matchesFilter && `${task.title} ${task.subject}`.toLocaleLowerCase("es").includes(query);
+      });
+      const list = document.getElementById("taskList");
+      list.replaceChildren();
+      if (!visible.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-row";
+        empty.textContent = "No hay tareas en esta vista.";
+        list.appendChild(empty);
+      }
+      visible.forEach(task => {
+        const row = document.createElement("div");
+        row.className = "task-row";
+        const title = document.createElement("div");
+        title.className = "task-title";
+        const checkbox = document.createElement("input");
+        checkbox.className = "task-check";
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        checkbox.setAttribute("aria-label", `${task.completed ? "Marcar pendiente" : "Completar"}: ${task.title}`);
+        checkbox.addEventListener("change", () => {
+          task.completed = checkbox.checked;
+          persistTasks();
+          renderTasks();
+        });
+        const taskText = document.createElement("span");
+        taskText.className = `task-title-text${task.completed ? " done" : ""}`;
+        taskText.textContent = task.title;
+        title.append(checkbox, taskText);
+        const subject = document.createElement("span");
+        subject.className = "task-subject";
+        subject.textContent = task.subject;
+        const due = document.createElement("span");
+        due.className = "task-date";
+        due.textContent = formatDate(task.due);
+        const priority = document.createElement("span");
+        priority.className = `priority ${task.priority}`;
+        priority.textContent = task.priority.toLocaleUpperCase("es");
+        const status = document.createElement("span");
+        status.className = `status${task.completed ? "" : " pending"}`;
+        status.textContent = task.completed ? "LISTO" : "pendiente";
+        row.append(title, subject, due, priority, status);
+        list.appendChild(row);
+      });
+      const completed = tasks.filter(task => task.completed).length;
+      const percentage = tasks.length ? Math.round(completed / tasks.length * 100) : 0;
+      document.getElementById("totalTasks").textContent = tasks.length;
+      document.getElementById("completedTasks").textContent = completed;
+      document.getElementById("pendingTasks").textContent = tasks.length - completed;
+      document.getElementById("progressLabel").textContent = `${percentage}%`;
+      document.getElementById("progressFill").style.width = `${percentage}%`;
+      document.querySelector(".progress-track").setAttribute("aria-valuenow", percentage);
+      document.getElementById("heroProgress").textContent = `${completed} de ${tasks.length} · ${percentage}%`;
+      document.getElementById("heroFill").style.width = `${percentage}%`;
+    }
+
+    function renderStudySummary() {
+      let record = { minutes: 0, sessions: [] };
+      try { record = JSON.parse(localStorage.getItem(studyKey) || "null") || record; } catch { /* Keep the empty summary. */ }
+      const minutes = Number(record.minutes) || 0;
+      document.getElementById("studyHours").textContent = minutes >= 60 ? `${(minutes / 60).toFixed(1)} h` : `${minutes} min`;
+      document.getElementById("studySessions").textContent = record.sessions.length;
+    }
+
+    document.querySelectorAll(".filter").forEach(button => button.addEventListener("click", () => {
+      filter = button.dataset.filter;
+      document.querySelectorAll(".filter").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+      renderTasks();
+    }));
+    document.getElementById("searchTasks").addEventListener("input", renderTasks);
+    document.getElementById("quickTaskForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      tasks.unshift({ id: crypto.randomUUID(), title: String(data.get("title")).trim(), subject: "Matemáticas", due: String(data.get("due") || ""), priority: String(data.get("priority")), completed: false });
+      persistTasks();
+      event.currentTarget.reset();
+      filter = "all";
+      document.querySelectorAll(".filter").forEach(item => item.setAttribute("aria-pressed", String(item.dataset.filter === "all")));
+      renderTasks();
+      showToast("Tarea agregada.");
+    });
+    const dialog = document.getElementById("taskDialog");
+    document.getElementById("openTaskDialog").addEventListener("click", () => dialog.showModal());
+    document.getElementById("taskDialogForm").addEventListener("submit", event => {
+      if (event.submitter?.id !== "saveDialogTask") return;
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const title = String(data.get("title")).trim();
+      if (!title) return;
+      tasks.unshift({ id: crypto.randomUUID(), title, subject: "Matemáticas", due: String(data.get("due") || ""), priority: String(data.get("priority")), completed: false });
+      persistTasks();
+      event.currentTarget.reset();
+      dialog.close();
+      filter = "all";
+      document.querySelectorAll(".filter").forEach(item => item.setAttribute("aria-pressed", String(item.dataset.filter === "all")));
+      renderTasks();
+      showToast("Tarea agregada.");
+    });
+
+    if (user) {
+      document.getElementById("navUserName").textContent = user.nombre;
+      document.getElementById("mentorName").textContent = user.mentorName || "Sin mentor";
+      const streak = Number(user.racha) || 0;
+      document.getElementById("streak").textContent = `🔥 ${streak} ${streak === 1 ? "día" : "días"}`;
+      if (user.mentorId === "zorro-spark") {
+        document.getElementById("navMentorAvatar").classList.add("zorro-spark");
+      }
+    }
+    renderTasks();
+    renderStudySummary();
+    window.addEventListener("storage", event => { if (event.key === studyKey) renderStudySummary(); });
+  </script>
+</body>
+</html>

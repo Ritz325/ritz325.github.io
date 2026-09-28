@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear cuenta · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#294654;background:#f2f7ed;font-synthesis:none}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;display:grid;grid-template-rows:60px 1fr;background:radial-gradient(ellipse at 8% 95%,rgba(255,201,51,.28),transparent 35%),radial-gradient(ellipse at 94% 5%,rgba(79,178,63,.12),transparent 32%),linear-gradient(145deg,#edf8f2,#fbf5e7 72%,#f6edda)}
+    a{color:inherit}
+    .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.08rem;font-weight:800}
+    .fox{width:42px;height:42px;display:block;flex:none;background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;background-size:contain;background-position:center;background-repeat:no-repeat;border:2px solid #fff0d2;border-radius:10px}
+    .back{padding:7px 11px;border:2px solid rgba(255,248,231,.7);border-radius:10px;font-weight:800;text-decoration:none}
+    main{display:grid;place-items:center;padding:clamp(10px,1.5vh,14px) 24px}
+    .register-shell{width:min(100%,1080px);min-height:min(620px,calc(100vh - 132px));display:grid;grid-template-columns:.92fr 1.08fr;overflow:hidden;background:#fff8e7;border:5px solid #8a5a2b;border-radius:18px;box-shadow:0 10px 0 rgba(43,33,24,.2);animation:arrive .55s cubic-bezier(.2,.8,.2,1) both}
+    .welcome-side{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:42px;background:#dff8ff;text-align:center}
+    .welcome-side::before,.welcome-side::after{content:"";position:absolute;z-index:0;width:190px;aspect-ratio:1;border:18px solid rgba(56,182,240,.12);border-radius:50%}
+    .welcome-side::before{top:-100px;left:-82px}.welcome-side::after{right:-108px;bottom:-115px;width:250px;border-color:rgba(79,178,63,.13)}
+    .welcome-content{position:relative;z-index:1;width:min(100%,370px)}
+    .star{height:96px;display:grid;place-items:center;color:#ffc933;font-size:4.8rem;line-height:1;text-shadow:0 4px 0 #e69b1d,0 8px 18px rgba(43,33,24,.12)}
+    .wordmark{max-width:330px;margin:14px auto 22px;color:#294654;font-size:clamp(2.35rem,4.4vw,3.1rem);font-weight:800;line-height:1.05}
+    .wordmark span{color:#ef7b24}
+    .features{display:grid;gap:10px;text-align:center}
+    .feature{display:grid;justify-items:center;gap:2px;min-height:58px;padding:8px 12px;background:#eff8ff;border:2px solid #b6e4f5;border-radius:11px;box-shadow:0 3px 0 rgba(31,111,143,.12);color:#ef7b24;font-weight:800;line-height:1.15}
+    .feature-icon{font-size:1rem;line-height:1}
+    .form-side{display:flex;align-items:center;justify-content:center;padding:clamp(24px,3.2vw,44px);background:#fff8e7}
+    .register-panel{width:min(100%,520px)}
+    .eyebrow{margin:0 0 5px;color:#ef7b24;font-size:.9rem;font-weight:800;text-transform:uppercase}
+    h1{margin:0;color:#294654;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.08}
+    .intro{margin:4px 0 22px;color:#63808a;font-weight:700}
+    .field-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:12px}
+    .form-field{min-width:0;margin-bottom:13px}
+    label{display:block;margin-bottom:5px;color:#385866;font-size:.92rem;font-weight:800}
+    input{width:100%;min-height:44px;padding:8px 11px;border:2px solid #d5dfe0;border-radius:9px;background:#f4f6f6;color:#294654;font:inherit;font-size:.95rem;transition:border-color .18s,box-shadow .18s}
+    input:focus{border-color:#38b6f0;box-shadow:0 0 0 4px rgba(56,182,240,.18);outline:none}
+    input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+    .error{min-height:1.25em;margin:2px 0 0;color:#b3332a;font-weight:700;font-size:.88rem}
+    .terms{display:flex;align-items:flex-start;gap:8px;margin:5px 0 15px;padding:8px 10px;background:#edf0ff;border-radius:10px;color:#466a7b;font-size:.8rem;font-weight:700;line-height:1.2}
+    .terms input{width:17px;height:17px;min-height:17px;flex:none;margin:1px 0 0;accent-color:#2d63d8}
+    .terms a{color:#2d63d8}
+    button{width:100%;min-height:48px;border:0;border-radius:10px;background:#294654;color:#ff8a32;font:inherit;font-size:1.08rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #18313b;transition:transform .16s,background .16s}
+    button:hover{background:#35596a;transform:translateY(-1px)}
+    button:active{transform:translateY(3px);box-shadow:0 1px 0 #18313b}
+    .signin{margin:15px 0 0;color:#68818a;text-align:center;font-size:.9rem}
+    .signin a{color:#2d63d8;font-weight:800;text-decoration:none}
+    .notice{margin:10px 0 0;color:#7a817c;text-align:center;font-size:.76rem;line-height:1.25}
+    @keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:760px){body{grid-template-rows:54px 1fr}.topbar{padding-inline:12px}.register-shell{min-height:0;grid-template-columns:1fr}.welcome-side{padding:19px 20px 16px}.star{height:55px;font-size:3.5rem}.wordmark{margin:8px auto 0;font-size:2.2rem}.features{display:none}.form-side{padding:24px 22px 28px}.intro{margin-bottom:18px}}
+    @media(max-width:480px){main{padding:12px}.register-shell{border-width:3px}.welcome-side{padding:15px 14px 12px}.wordmark{font-size:2rem}.form-side{padding:20px 17px 24px}.field-grid{grid-template-columns:1fr;gap:0}.form-field{margin-bottom:11px}input{font-size:1rem}.terms{margin-top:3px}}
+    @media(prefers-reduced-motion:reduce){.register-shell{animation:none}button,input{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+  </header>
+  <main>
+    <div class="register-shell">
+      <section class="welcome-side" aria-label="Únete a Study Play">
+        <div class="welcome-content">
+          <div class="star" aria-hidden="true">★</div>
+          <h2 class="wordmark">Únete a Study <span>Play</span></h2>
+          <div class="features" aria-label="Beneficios">
+            <div class="feature"><span class="feature-icon" aria-hidden="true">🎯</span><span>Organización<br>Gestiona todas tus tareas</span></div>
+            <div class="feature"><span class="feature-icon" aria-hidden="true">⚡</span><span>Motivación<br>Gamificación y recompensas</span></div>
+            <div class="feature"><span class="feature-icon" aria-hidden="true">🧠</span><span>Aprendizaje<br>IA que te acompaña</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="form-side" aria-labelledby="registerTitle">
+        <div class="register-panel">
+          <p class="eyebrow">¡Comienza hoy!</p>
+          <h1 id="registerTitle">Crear cuenta</h1>
+          <p class="intro">Comienza tu aventura académica hoy 🚀</p>
+          <form id="registerForm">
+            <div class="field-grid">
+              <div class="form-field">
+                <label for="name">♟ Nombre</label>
+                <input id="name" name="name" type="text" autocomplete="name" maxlength="32" placeholder="Tu nombre" required>
+              </div>
+              <div class="form-field">
+                <label for="email">✉ Correo electrónico</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="tu@gmail.com" required>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="password">🔒 Contraseña</label>
+              <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres" required>
+            </div>
+            <div class="form-field">
+              <label for="confirmPassword">🔑 Confirmar contraseña</label>
+              <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Repite tu contraseña" required>
+            </div>
+            <label class="terms" for="acceptTerms">
+              <input id="acceptTerms" name="acceptTerms" type="checkbox" required>
+              <span>Al registrarte aceptas los <a href="#terms" id="termsLink">Términos de Uso</a> y la <a href="#privacy" id="privacyLink">Política de Privacidad</a>.</span>
+            </label>
+            <p class="error" id="formError" role="alert"></p>
+            <button type="submit">Crear cuenta</button>
+          </form>
+          <p class="signin">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+          <p class="notice">Registro de demostración: se guarda el nombre y correo en este navegador. La contraseña no se almacena.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const form = document.getElementById("registerForm");
+    const error = document.getElementById("formError");
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmation = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmation) {
+        error.textContent = "Las contraseñas no coinciden.";
+        document.getElementById("confirmPassword").focus();
+        return;
+      }
+
+      try {
+        sessionStorage.setItem("studyPlayPendingRegistration", JSON.stringify({ nombre: name, email }));
+        location.href = "mentor.html";
+      } catch {
+        error.textContent = "No se pudieron guardar temporalmente tus datos en este navegador.";
+      }
+    });
+
+    for (const id of ["termsLink", "privacyLink"]) {
+      document.getElementById(id).addEventListener("click", event => {
+        event.preventDefault();
+        error.textContent = "La información legal estará disponible próximamente.";
+      });
+    }
+  </script>
+</body>
+</html>

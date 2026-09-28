@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi perfil · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#294654;background:#edf8f2;font-synthesis:none}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;background:radial-gradient(ellipse at 8% 90%,rgba(255,201,51,.2),transparent 32%),linear-gradient(145deg,#edf8f2,#fbf5e7 72%,#f6edda)}
+    a{color:inherit}
+    button,input,select{font:inherit}
+    button,a,select{touch-action:manipulation}
+    :focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+    .topbar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:6px 22px;background:#ef7b24;border-bottom:4px solid #8a5a2b;color:#fff8e7}
+    .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.08rem;font-weight:800}
+    .fox{width:42px;height:42px;display:block;flex:none;background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;background-size:contain;background-position:center;background-repeat:no-repeat;border:2px solid #fff0d2;border-radius:10px}
+    .back{padding:7px 11px;border:2px solid rgba(255,248,231,.7);border-radius:10px;font-weight:800;text-decoration:none}
+    main{width:min(100% - 32px,1080px);margin:22px auto 30px}
+    .page-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:15px}
+    h1{margin:0;color:#294654;font-size:1.9rem;line-height:1}
+    .subtitle{margin:5px 0 0;color:#547483;font-size:.92rem;font-weight:700}
+    .heading-badges{display:flex;align-items:center;gap:8px}
+    .badge{padding:6px 11px;background:#dff8ff;border:1px solid #b6e4f5;border-radius:8px;color:#087e98;font-weight:800;white-space:nowrap}
+    .badge.streak{background:#fff0d2;border-color:#f5d395;color:#bb5b1c}
+    .dashboard{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(0,1.1fr);gap:14px;align-items:start}
+    .summary{grid-row:span 2;padding:20px;background:#dff8ff;border:1px solid #a7dce9;border-radius:10px}
+    .identity{display:flex;align-items:center;gap:14px;padding-bottom:15px;border-bottom:1px solid #b7dfe8}
+    .avatar{width:76px;height:76px;flex:none;background:#f3f6f6 center/contain no-repeat;border:3px dashed #9bb3ba;border-radius:12px}
+    .avatar.zorro-spark{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;border-color:#173a73}
+    .identity h2{margin:0;color:#294654;font-size:1.25rem;line-height:1.1;overflow-wrap:anywhere}
+    .identity p{margin:4px 0 0;color:#547483;font-size:.88rem;overflow-wrap:anywhere}
+    .level-line{display:flex;justify-content:space-between;gap:8px;margin-top:15px;font-weight:800;font-size:.88rem}
+    .xp-track{height:12px;margin-top:6px;overflow:hidden;background:#fff;border:1px solid #9ccbd7;border-radius:99px}
+    .xp-fill{height:100%;width:0;background:#7d46cf;border-radius:inherit;transition:width .5s ease}
+    .xp-caption{margin:6px 0 0;color:#547483;text-align:center;font-size:.78rem;font-weight:700}
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .stat{min-height:84px;display:flex;flex-direction:column;justify-content:center;padding:12px 14px;border:1px solid;border-radius:8px}
+    .stat strong{font-size:1.28rem;line-height:1.05}
+    .stat span{margin-top:4px;color:#294654;font-size:.78rem;font-weight:800}
+    .stat.cyan{background:#bfeaf0;border-color:#0c91a3;color:#087e98}
+    .stat.orange{background:#ffdbc0;border-color:#ef7b24;color:#e76c20}
+    .stat.green{background:#cce8c3;border-color:#4c9e50;color:#43833d}
+    .stat.purple{background:#e2d1f5;border-color:#8751ca;color:#7542b7}
+    .lower-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    .panel{padding:14px;background:#fffefa;border:1px solid #bdcdd0;border-radius:8px}
+    .panel h2{display:flex;align-items:center;gap:7px;margin:0 0 12px;color:#294654;font-size:1rem}
+    .chart{height:118px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:end;gap:9px;padding:4px 2px 0;border-bottom:1px solid #b9c9cd}
+    .chart-day{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:5px;color:#294654;font-size:.7rem;font-weight:800}
+    .chart-bar{width:min(100%,27px);height:8px;background:#d9e0e1;border-radius:3px 3px 0 0}
+    .chart-bar.active{background:#0c91a3}
+    .chart-note{margin:8px 0 0;color:#71878c;text-align:center;font-size:.76rem}
+    .settings{display:grid;gap:5px}
+    .setting{border-bottom:1px solid #e1e8e8}
+    .setting:last-child{border:0}
+    .setting summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 2px;color:#365461;font-size:.86rem;font-weight:800;cursor:pointer;list-style:none}
+    .setting summary::-webkit-details-marker{display:none}
+    .setting summary::after{content:"›";font-size:1.2rem}
+    .setting[open] summary::after{content:"⌄"}
+    .setting-body{padding:4px 2px 10px;color:#607a82;font-size:.82rem}
+    .setting-body label{display:block;margin:0 0 5px;font-weight:800}
+    .setting-body input,.setting-body select{width:100%;min-height:36px;padding:5px 8px;border:1px solid #bfd1d5;border-radius:6px;background:#fff;color:#294654}
+    .setting-body button{min-height:34px;margin-top:7px;padding:4px 10px;border:0;border-radius:6px;background:#0c91a3;color:#fff;font-weight:800;cursor:pointer}
+    .setting-body .inline-control{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .setting-body input[type=checkbox]{width:18px;min-height:18px;accent-color:#0c91a3}
+    .achievements{grid-column:1/-1}
+    .achievement-list{display:flex;flex-wrap:wrap;gap:8px}
+    .achievement{padding:7px 10px;border:1px solid;border-radius:7px;font-size:.8rem;font-weight:800}
+    .achievement.orange{background:#ffead9;border-color:#f5b17b;color:#d65d1d}
+    .achievement.cyan{background:#c9eef1;border-color:#8ccdd4;color:#087e98}
+    .achievement.purple{background:#e8def7;border-color:#c4a8e7;color:#7542b7}
+    .empty{padding:24px;background:#fff8e7;border:2px solid #d5a66f;border-radius:10px;text-align:center}
+    .empty a{display:inline-block;margin-top:10px;padding:7px 12px;border-radius:8px;background:#ef7b24;color:#fff8e7;font-weight:800;text-decoration:none}
+    .notice{color:#70858a;font-size:.75rem}
+    @media(max-width:760px){.topbar{padding-inline:12px}main{width:min(100% - 24px,560px);margin:16px auto 24px}.dashboard{grid-template-columns:1fr}.summary{grid-row:auto}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid{grid-template-columns:1fr}.achievements{grid-column:auto}.page-heading{align-items:start;flex-direction:column}.heading-badges{flex-wrap:wrap}}
+    @media(max-width:420px){.topbar{height:54px}.fox{width:36px;height:36px}.brand{font-size:.98rem}.back{font-size:.88rem}.identity{gap:10px}.avatar{width:62px;height:62px}.summary{padding:15px}.stat{min-height:76px;padding:10px}.chart{gap:5px}}
+    @media(prefers-reduced-motion:reduce){.xp-fill{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="fox" aria-hidden="true"></span><span>STUDY PLAY</span></a>
+    <a class="back" href="index.html">Volver al mapa</a>
+  </header>
+  <main id="profileContent"></main>
+  <script>
+    const content = document.getElementById("profileContent");
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem("studyPlayUser") || "null");
+    } catch {
+      user = null;
+    }
+
+    if (!user || !user.nombre) {
+      content.innerHTML = '<section class="empty"><h1>Sin sesión activa</h1><p>Inicia sesión para ver tu perfil.</p><a href="login.html">Iniciar sesión</a></section>';
+    } else {
+      const level = Number(user.nivel) || 1;
+      const xp = Math.min(100, Math.max(0, Number(user.xp) || 0));
+      const streak = Math.max(0, Number(user.racha) || 0);
+      const profileName = user.nombre;
+      const email = user.email || "Correo no registrado";
+
+      content.innerHTML = `
+        <header class="page-heading">
+          <div><h1>Mi perfil</h1><p class="subtitle">Estadísticas y configuración de cuenta</p></div>
+          <div class="heading-badges"><span class="badge" data-mentor-badge></span><span class="badge streak">🔥 ${streak} días</span><span class="badge" aria-label="Notificaciones">🔔</span></div>
+        </header>
+        <div class="dashboard">
+          <section class="summary" aria-label="Resumen del jugador">
+            <div class="identity"><span class="avatar" role="img" aria-label="Espacio reservado para la imagen del mentor"></span><div><h2 data-profile-name></h2><p data-profile-email></p><p>Nivel ${level} · <span data-mentor-name></span></p></div></div>
+            <div class="level-line"><span>Nivel ${level}</span><span>${xp} / 100 XP</span></div>
+            <div class="xp-track" role="progressbar" aria-label="Experiencia del nivel" aria-valuenow="${xp}" aria-valuemin="0" aria-valuemax="100"><div class="xp-fill" style="width:${xp}%"></div></div>
+            <p class="xp-caption">Progreso para el siguiente nivel</p>
+          </section>
+          <section class="stats" aria-label="Estadísticas principales">
+            <div class="stat cyan"><strong>--</strong><span>Horas totales</span></div>
+            <div class="stat orange"><strong>${streak} días</strong><span>Racha actual</span></div>
+            <div class="stat green"><strong>--</strong><span>Tareas completadas</span></div>
+            <div class="stat purple"><strong>--</strong><span>Materia favorita</span></div>
+          </section>
+          <div class="lower-grid">
+            <section class="panel" aria-labelledby="studyTitle">
+              <h2 id="studyTitle">📊 Horas de estudio — esta semana</h2>
+              <div class="chart" role="img" aria-label="Gráfico semanal sin datos registrados">
+                <div class="chart-day"><span class="chart-bar"></span><span>L</span></div><div class="chart-day"><span class="chart-bar"></span><span>M</span></div><div class="chart-day"><span class="chart-bar"></span><span>X</span></div><div class="chart-day"><span class="chart-bar"></span><span>J</span></div><div class="chart-day"><span class="chart-bar"></span><span>V</span></div><div class="chart-day"><span class="chart-bar"></span><span>S</span></div><div class="chart-day"><span class="chart-bar"></span><span>D</span></div>
+              </div>
+              <p class="chart-note">El registro de actividad semanal aún no está disponible.</p>
+            </section>
+            <section class="panel" aria-labelledby="settingsTitle">
+              <h2 id="settingsTitle">⚙️ Configuración</h2>
+              <div class="settings">
+                <details class="setting"><summary>👤 Editar perfil</summary><div class="setting-body"><label for="editName">Nombre</label><input id="editName" maxlength="32"><label for="editEmail">Correo electrónico</label><input id="editEmail" type="email"><button type="button" id="saveProfile">Guardar cambios</button></div></details>
+                <details class="setting"><summary>🔒 Cambiar contraseña</summary><div class="setting-body">La contraseña no se almacena en esta demo. Conecta un servicio de autenticación para habilitar esta opción.</div></details>
+                <details class="setting"><summary>🌐 Idioma</summary><div class="setting-body"><label for="language">Idioma de la interfaz</label><select id="language"><option>Español</option></select></div></details>
+                <details class="setting"><summary>🔔 Notificaciones</summary><div class="setting-body"><label class="inline-control" for="notifications">Recordatorios de estudio<input id="notifications" type="checkbox"></label></div></details>
+                <details class="setting"><summary>🐾 Mentor virtual</summary><div class="setting-body"><label for="mentorSelect">Mentor seleccionado</label><select id="mentorSelect"><option value="panda-zen">Panda Zen</option><option value="zorro-spark">Zorro Spark</option><option value="gata-luna">Gata Luna</option><option value="tortuga-sage">Tortuga Sage</option></select><button type="button" id="saveMentor">Guardar mentor</button></div></details>
+                <details class="setting"><summary>🎨 Tema visual</summary><div class="setting-body"><label for="theme">Tema</label><select id="theme"><option value="map">Aventura del mapa</option></select></div></details>
+                <details class="setting"><summary>🚪 Cerrar sesión</summary><div class="setting-body">Se cerrará la sesión de este navegador.<br><button type="button" id="signOut">Cerrar sesión</button></div></details>
+              </div>
+            </section>
+          </div>
+          <section class="panel achievements" aria-labelledby="achievementsTitle"><h2 id="achievementsTitle">🏆 Logros recientes</h2><div class="achievement-list"><span class="achievement orange">Aún no hay logros</span><span class="achievement cyan">Sigue explorando el mapa</span><span class="achievement purple">Tu aventura comienza aquí</span></div></section>
+        </div>`;
+
+      content.querySelector("[data-profile-name]").textContent = profileName;
+      content.querySelector("[data-profile-email]").textContent = email;
+      content.querySelector("[data-mentor-name]").textContent = user.mentorName || "Sin mentor";
+      content.querySelector("[data-mentor-badge]").textContent = `🐾 ${user.mentorName || "Sin mentor"}`;
+      content.querySelector("#editName").value = profileName;
+      content.querySelector("#editEmail").value = user.email || "";
+      content.querySelector("#notifications").checked = localStorage.getItem("studyPlayNotifications") === "true";
+      content.querySelector("#mentorSelect").value = user.mentorId || "";
+      const avatar = content.querySelector(".avatar");
+      if (user.mentorId === "zorro-spark") avatar.classList.add("zorro-spark");
+      avatar.setAttribute("aria-label", user.mentorName ? `Mentor virtual: ${user.mentorName}` : "Espacio reservado para la imagen del mentor");
+
+      content.querySelector("#saveProfile").addEventListener("click", () => {
+        const updatedName = content.querySelector("#editName").value.trim();
+        const updatedEmail = content.querySelector("#editEmail").value.trim();
+        if (!updatedName || !content.querySelector("#editEmail").checkValidity()) {
+          content.querySelector("#editName").focus();
+          return;
+        }
+        const updatedUser = { ...user, nombre: updatedName, email: updatedEmail };
+        if (user.email && user.email.toLowerCase() !== updatedEmail.toLowerCase()) {
+          const accounts = JSON.parse(localStorage.getItem("studyPlayAccounts") || "{}");
+          delete accounts[user.email.toLowerCase()];
+          accounts[updatedEmail.toLowerCase()] = updatedUser;
+          localStorage.setItem("studyPlayAccounts", JSON.stringify(accounts));
+        }
+        localStorage.setItem("studyPlayUser", JSON.stringify(updatedUser));
+        location.reload();
+      });
+      content.querySelector("#notifications").addEventListener("change", event => {
+        localStorage.setItem("studyPlayNotifications", String(event.target.checked));
+      });
+      content.querySelector("#saveMentor").addEventListener("click", () => {
+        const mentorId = content.querySelector("#mentorSelect").value;
+        const mentors = { "panda-zen": "Panda Zen", "zorro-spark": "Zorro Spark", "gata-luna": "Gata Luna", "tortuga-sage": "Tortuga Sage" };
+        const updatedUser = { ...user, mentorId, mentorName: mentors[mentorId] };
+        localStorage.setItem("studyPlayUser", JSON.stringify(updatedUser));
+        if (user.email) {
+          const accounts = JSON.parse(localStorage.getItem("studyPlayAccounts") || "{}");
+          accounts[user.email.toLowerCase()] = updatedUser;
+          localStorage.setItem("studyPlayAccounts", JSON.stringify(accounts));
+        }
+        location.reload();
+      });
+      content.querySelector("#signOut").addEventListener("click", () => {
+        localStorage.removeItem("studyPlayUser");
+        location.href = "index.html";
+      });
+    }
+  </script>
+</body>
+</html>

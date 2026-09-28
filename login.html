@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#294654;background:#f2f7ed;font-synthesis:none}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;display:grid;grid-template-rows:60px 1fr;background:radial-gradient(ellipse at 8% 95%,rgba(255,201,51,.28),transparent 35%),radial-gradient(ellipse at 94% 5%,rgba(79,178,63,.12),transparent 32%),linear-gradient(145deg,#edf8f2,#fbf5e7 72%,#f6edda)}
+    a{color:inherit}
+    .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.08rem;font-weight:800}
+    .fox{width:42px;height:42px;display:block;flex:none;background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;background-size:contain;background-position:center;background-repeat:no-repeat;border:2px solid #fff0d2;border-radius:10px}
+    .back{padding:7px 11px;border:2px solid rgba(255,248,231,.7);border-radius:10px;font-weight:800;text-decoration:none}
+    main{display:grid;place-items:center;padding:clamp(16px,4vh,38px) 24px}
+    .login-shell{width:min(100%,1080px);min-height:min(620px,calc(100vh - 132px));display:grid;grid-template-columns:.92fr 1.08fr;overflow:hidden;background:#fff8e7;border:5px solid #8a5a2b;border-radius:18px;box-shadow:0 10px 0 rgba(43,33,24,.2);animation:arrive .55s cubic-bezier(.2,.8,.2,1) both}
+    .welcome-side{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;overflow:hidden;padding:42px;background:#dff8ff;text-align:center}
+    .welcome-side::before,.welcome-side::after{content:"";position:absolute;z-index:0;width:190px;aspect-ratio:1;border:18px solid rgba(56,182,240,.12);border-radius:50%}
+    .welcome-side::before{top:-100px;left:-82px}.welcome-side::after{right:-108px;bottom:-115px;width:250px;border-color:rgba(79,178,63,.13)}
+    .welcome-content{position:relative;z-index:1;width:min(100%,370px)}
+    .mascot{width:168px;height:158px;margin:0 auto 12px;display:block;background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;background-size:contain;background-position:center;background-repeat:no-repeat;border:3px solid #173a73;border-radius:16px;box-shadow:0 5px 0 rgba(43,33,24,.14)}
+    .wordmark{margin:0;color:#294654;font-size:clamp(2.5rem,5vw,3.5rem);font-weight:800;line-height:1}
+    .wordmark span{color:#ef7b24}
+    .tagline{max-width:260px;margin:12px auto 22px;color:#447184;font-weight:700;line-height:1.25}
+    .features{display:grid;gap:10px;text-align:left}
+    .feature{display:flex;align-items:center;gap:10px;min-height:52px;padding:9px 13px;background:#eff8ff;border:2px solid #b6e4f5;border-radius:11px;box-shadow:0 3px 0 rgba(31,111,143,.12);color:#315d70;font-weight:700;line-height:1.15}
+    .feature-icon{width:30px;height:30px;display:grid;place-items:center;flex:none;border-radius:9px;background:#ffc933;font-size:1.1rem}
+    .feature:nth-child(2) .feature-icon{background:#a9e67b}.feature:nth-child(3) .feature-icon{background:#ffbd84}
+    .form-side{display:flex;align-items:center;justify-content:center;padding:clamp(24px,3.2vw,44px);background:#fff8e7}
+    .login-panel{width:min(100%,420px)}
+    .eyebrow{margin:0 0 7px;color:#ef7b24;font-size:.9rem;font-weight:800;text-transform:uppercase}
+    h1{margin:0;color:#294654;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.08}
+    .intro{margin:9px 0 30px;color:#63808a;font-weight:700}
+    label{display:block;margin-bottom:7px;color:#385866;font-weight:800}
+    input{width:100%;min-height:50px;padding:10px 14px;border:2px solid #d5dfe0;border-radius:10px;background:#f4f6f6;color:#294654;font:inherit;transition:border-color .18s,box-shadow .18s}
+    input:focus{border-color:#38b6f0;box-shadow:0 0 0 4px rgba(56,182,240,.18);outline:none}
+    input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+    .form-field{margin-bottom:17px}
+    .password-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+    .password-heading label{margin:0}
+    .text-action{padding:0;border:0;background:none;color:#2d63d8;font:inherit;font-size:.84rem;font-weight:800;text-decoration:none;cursor:pointer;box-shadow:none}
+    .text-action:hover{background:none;text-decoration:underline;transform:none}
+    .text-action:active{transform:none;box-shadow:none}
+    button{width:100%;min-height:50px;margin-top:15px;border:0;border-radius:10px;background:#ef7b24;color:#fff8e7;font:inherit;font-size:1.12rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #b65416;transition:transform .16s,background .16s}
+    button:hover{background:#f58b31;transform:translateY(-1px)}
+    button:active{transform:translateY(3px);box-shadow:0 1px 0 #b65416}
+    .error{min-height:1.35em;margin:7px 0 0;color:#b3332a;font-weight:700}
+    .signup{margin:22px 0 0;color:#68818a;text-align:center;font-size:.94rem}
+    .notice{margin:16px 0 0;color:#7a817c;text-align:center;font-size:.8rem;line-height:1.3}
+    @keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:760px){body{grid-template-rows:54px 1fr}.topbar{padding-inline:12px}.login-shell{min-height:0;grid-template-columns:1fr}.welcome-side{padding:24px 20px 20px;gap:10px}.mascot{width:112px;height:102px;margin-bottom:3px}.wordmark{font-size:2.35rem}.tagline{margin:7px auto 0}.features{display:none}.form-side{padding:25px 22px 30px}.intro{margin-bottom:20px}.notice{margin-top:14px}}
+    @media(max-width:420px){main{padding:12px}.login-shell{border-width:3px}.welcome-side{padding:18px 16px 14px}.form-side{padding:22px 18px}.back{font-size:.9rem}}
+    @media(prefers-reduced-motion:reduce){.login-shell{animation:none}button,input{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+  </header>
+  <main>
+    <div class="login-shell">
+      <section class="welcome-side" aria-label="Presentación de Study Play">
+        <div class="welcome-content">
+          <div class="mascot" role="img" aria-label="Mascota oficial de Study Play: un zorro leyendo un libro"></div>
+          <p class="wordmark">Study <span>play</span></p>
+          <p class="tagline">Tu aventura académica empieza aquí.</p>
+          <div class="features" aria-label="Actividades">
+            <div class="feature"><span class="feature-icon" aria-hidden="true">🧭</span><span>Explora materias y desbloquea nuevas rutas</span></div>
+            <div class="feature"><span class="feature-icon" aria-hidden="true">⭐</span><span>Gana experiencia mientras aprendes</span></div>
+            <div class="feature"><span class="feature-icon" aria-hidden="true">🏆</span><span>Alcanza logros a tu propio ritmo</span></div>
+          </div>
+        </div>
+      </section>
+      <section class="form-side" aria-labelledby="loginTitle">
+        <div class="login-panel">
+          <p class="eyebrow">¡Qué bueno tenerte aquí!</p>
+          <h1 id="loginTitle">Bienvenido de nuevo</h1>
+          <p class="intro">Tu aventura académica te espera.</p>
+          <form id="loginForm">
+            <div class="form-field">
+              <label for="email">✉ Correo electrónico</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="estudiante@mail.com" required>
+            </div>
+            <div class="form-field">
+              <div class="password-heading">
+                <label for="password">🔒 Contraseña</label>
+                <a class="text-action" href="#recover" id="recoverLink">¿Olvidaste tu contraseña?</a>
+              </div>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required>
+            </div>
+            <p class="error" id="formError" role="alert"></p>
+            <button type="submit">Iniciar sesión</button>
+          </form>
+          <p class="signup">¿No tienes una cuenta? <a class="text-action" href="registro.html" id="registerLink">Regístrate</a></p>
+          <p class="notice">Demo local: el correo identifica tu perfil; la contraseña no se guarda ni se verifica con un servidor.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const formError = document.getElementById("formError");
+    document.getElementById("recoverLink").addEventListener("click", event => {
+      event.preventDefault();
+      formError.textContent = "La recuperación estará disponible al conectar una cuenta.";
+    });
+    document.getElementById("loginForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      if (!email || !password) return;
+      try {
+        const accounts = JSON.parse(localStorage.getItem("studyPlayAccounts") || "{}");
+        let account = accounts[email.toLowerCase()];
+        if (!account) {
+          let previousUser = null;
+          try {
+            previousUser = JSON.parse(localStorage.getItem("studyPlayUser") || "null");
+          } catch {
+            previousUser = null;
+          }
+          if (previousUser && previousUser.email && previousUser.email.toLowerCase() === email.toLowerCase()) {
+            sessionStorage.setItem("studyPlayPendingRegistration", JSON.stringify({ nombre: previousUser.nombre, email }));
+            location.href = "mentor.html";
+            return;
+          }
+          formError.textContent = "No encontramos esa cuenta. Regístrate para elegir tu mentor.";
+          return;
+        }
+        localStorage.setItem("studyPlayUser", JSON.stringify(account));
+        location.href = "index.html";
+      } catch {
+        formError.textContent = "No se pudo guardar la sesión en este navegador.";
+      }
+    });
+  </script>
+</body>
+</html>

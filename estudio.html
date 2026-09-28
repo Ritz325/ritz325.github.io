@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sala de estudio · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#284652;background:#e9f8fa;font-synthesis:none;--navy:#294654;--cyan:#078d9d;--orange:#ef7b24;--line:#c7d9dc}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;background:#e9f8fa}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    :focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+    .app{min-height:100vh;display:grid;grid-template-columns:224px minmax(0,1fr)}
+    .sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:22px 14px 16px;background:var(--navy);color:#effbfc}
+    .wordmark{padding:0 13px 19px;border-bottom:1px solid #ffffff40;font-size:1.45rem;font-weight:800;line-height:.9}.wordmark span{display:block;color:#20b9c4;font-size:1.65rem}
+    .nav-label{margin:18px 10px 7px;color:#afc4c9;font-size:.76rem;font-weight:800;text-transform:uppercase}
+    .side-nav{display:grid;gap:5px}.side-nav a{min-height:40px;display:flex;align-items:center;gap:9px;padding:7px 11px;border-radius:7px;font-size:.9rem;font-weight:800}.side-nav a:hover{background:#3b6372}.side-nav a[aria-current=page]{background:var(--orange)}
+    .sidebar-bottom{display:flex;align-items:center;gap:10px;margin-top:auto;padding:12px 8px 3px;border-top:1px solid #ffffff40}
+    .mentor-avatar{width:42px;height:42px;flex:none;background:#eff5f5;border:1px solid #a5bdc2;border-radius:9px;background-position:center;background-size:contain;background-repeat:no-repeat}.mentor-avatar.zorro-spark{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;border-color:#fff0d2}
+    .user-copy{min-width:0;display:grid;line-height:1.15}.user-copy strong,.user-copy span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-copy strong{font-size:.85rem}.user-copy span{color:#b9d0d5;font-size:.75rem}
+    .workspace{min-width:0;max-width:1240px;width:100%;margin:auto;padding:18px 22px 26px}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}.heading h1{margin:0;font-size:1.65rem;line-height:1.05}.heading p{margin:3px 0 0;color:#527482;font-size:.86rem;font-weight:700}
+    .mentor-pill{display:flex;align-items:center;gap:7px;padding:6px 10px;background:#dff8ff;border:1px solid #b9e0e6;border-radius:7px;color:#008c9c;font-size:.82rem;font-weight:800;white-space:nowrap}.mentor-pill .mentor-avatar{width:27px;height:27px;border:0}
+    .session-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:14px;align-items:start}
+    .timer-card{min-height:425px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;background:var(--navy);border-radius:12px;color:#fff}
+    .timer-heading{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px}.timer-heading h2{margin:0;font-size:1.05rem}.session-count{padding:5px 10px;border-radius:99px;background:#fff;color:#d56824;font-size:.78rem;font-weight:800}
+    .mode-label{margin:7px 0 0;color:#c7e0e4;font-size:.86rem;font-weight:700}
+    .timer-ring{width:min(54vw,250px);aspect-ratio:1;display:grid;place-items:center;margin:12px auto 13px;border:7px solid var(--orange);border-radius:50%;box-shadow:inset 0 0 0 5px #ffffff13}
+    .timer-display{color:#0ba4b6;font-size:clamp(3rem,7vw,4.7rem);font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+    .timer-state{margin-top:4px;color:#fff;font-size:.9rem;font-weight:700;text-align:center}
+    .timer-controls{display:flex;align-items:center;justify-content:center;gap:16px}
+    .round-button{width:46px;height:46px;display:grid;place-items:center;border:0;border-radius:50%;background:#537c8d;color:#fff;font-size:1.1rem;cursor:pointer}.round-button.main{width:62px;height:62px;background:var(--cyan);font-size:1.5rem}.round-button:hover{filter:brightness(1.12)}
+    .session-metrics{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:17px}
+    .metric{padding:8px 5px;border-radius:10px;background:#537c8d;text-align:center}.metric strong{display:block;font-size:1rem}.metric span{display:block;color:#e2f3f4;font-size:.72rem;font-weight:700}
+    .side-stack{display:grid;gap:12px}
+    .stats-panel,.settings-panel{padding:13px;background:#fffefa;border:1px solid var(--line);border-radius:10px}
+    .stats-panel h2,.settings-panel h2{margin:0 0 9px;font-size:.96rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+    .stat{min-height:66px;padding:7px 9px;background:#bfeaf0;text-align:center}.stat:nth-child(2){background:#cce8c3}.stat:nth-child(3){background:#e2d1f5}.stat:nth-child(4){background:#ffdbc0}
+    .stat strong{display:block;color:#087e98;font-size:1.18rem;line-height:1.05}.stat:nth-child(2) strong{color:#43833d}.stat:nth-child(3) strong{color:#7542b7}.stat:nth-child(4) strong{color:#e76c20}.stat span{font-size:.7rem;font-weight:800}
+    .week-title{margin:10px 0 3px;font-size:.8rem;font-weight:800}.week-chart{height:82px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:end;gap:6px;border-bottom:1px solid var(--line)}
+    .day{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:3px;font-size:.63rem;font-weight:800}.day-bar{width:min(100%,20px);height:5px;background:#d9e0e1;border-radius:3px 3px 0 0}.day-bar.active{background:#303ce4}
+    .settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.setting label{display:block;margin-bottom:3px;color:#53727b;font-size:.7rem;font-weight:800}.setting select{width:100%;min-height:36px;padding:4px 7px;border:1px solid #cbd4d5;border-radius:99px;background:#f4f4f4;text-align:center;font-size:.79rem;font-weight:700}
+    .bottom-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+    .recent-panel,.focus-panel{padding:13px 14px;background:#fffefa;border:1px solid var(--line);border-radius:10px}.recent-panel h2,.focus-panel h2{margin:0 0 9px;font-size:.95rem}
+    .recent-list{display:grid;gap:6px}.recent-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 9px;border-radius:6px;background:#eff7f8;color:#526c74;font-size:.78rem;font-weight:700}.recent-item strong{color:#078d9d;white-space:nowrap}.recent-empty{padding:9px;color:#71868c;font-size:.8rem}
+    .focus-copy{margin:0;color:#657c82;font-size:.82rem;line-height:1.3}.back-link{display:inline-block;margin-top:9px;color:#087e98;font-size:.82rem;font-weight:800}
+    @media(max-width:900px){.app{grid-template-columns:180px minmax(0,1fr)}.workspace{padding:15px}.session-layout{grid-template-columns:1fr}.timer-card{min-height:400px}.side-stack{grid-template-columns:1fr 1fr}.bottom-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){.app{display:block}.sidebar{position:static;width:100%;height:auto;gap:8px;padding:10px 12px}.wordmark{padding:0 4px 9px;border:0;font-size:1rem;line-height:1}.wordmark span{display:inline;font-size:1.1rem}.nav-label{display:none}.side-nav{display:flex;overflow:auto;gap:5px}.side-nav a{flex:none;min-height:35px;padding:6px 10px;font-size:.79rem}.sidebar-bottom{display:none}.workspace{padding:12px}.heading h1{font-size:1.4rem}.heading p{font-size:.78rem}.topline{align-items:flex-start}.session-layout,.side-stack{grid-template-columns:1fr}.timer-card{min-height:380px;padding:17px}.timer-ring{width:min(65vw,225px)}.bottom-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.round-button{transition:none}}
+    .app{display:block;min-height:100vh}
+    .top-nav{position:sticky;z-index:8;top:0;display:flex;align-items:center;gap:22px;padding:10px max(20px,calc((100vw - 1240px)/2));background:var(--navy);color:#f3fcfd;box-shadow:0 4px 0 rgba(18,49,60,.18)}
+    .wordmark{flex:none;padding:0;border:0;font-size:1.05rem;line-height:1;white-space:nowrap}.wordmark span{display:inline;margin-left:3px;font-size:1.1rem}
+    .game-nav{display:flex;align-items:center;gap:5px;min-width:0}.game-nav a{display:flex;align-items:center;gap:6px;min-height:38px;padding:6px 12px;border-radius:8px;color:#e9f8fa;font-size:.86rem;font-weight:800;white-space:nowrap}.game-nav a:hover{background:#3b6372}.game-nav a[aria-current=page]{background:var(--orange);color:#fff;box-shadow:0 3px 0 #b85618}
+    .nav-user{display:flex;align-items:center;gap:8px;margin-left:auto}.nav-user-name{display:grid;max-width:120px;font-size:.78rem;font-weight:800;line-height:1.05}.nav-user-name span{overflow:hidden;color:#bfe3e8;text-overflow:ellipsis;white-space:nowrap;font-size:.68rem}
+    .nav-user .mentor-avatar{width:34px;height:34px;border-color:#fff0d2}.nav-streak,.nav-profile{min-height:34px;display:flex;align-items:center;justify-content:center;padding:5px 9px;border:1px solid #ffffff35;border-radius:8px;background:#345969;color:#fff;font-size:.78rem;font-weight:800;white-space:nowrap}.nav-streak{background:#fff0d2;border-color:#f6d6a7;color:#b5551c}.nav-profile:hover{background:#3f6a7a}
+    .workspace{width:min(100% - 40px,1180px);margin:0 auto;padding:20px 0 32px}
+    .topline{margin-bottom:13px}.heading h1{font-size:1.85rem}.heading p{font-size:.9rem}
+    .training-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;padding:15px 19px;background:linear-gradient(110deg,#dff8ff,#effcff 65%,#fff0d2);border:2px solid #b6dfe7;border-radius:12px;box-shadow:0 4px 0 rgba(41,70,84,.08)}
+    .training-copy{min-width:0}.training-tag{display:inline-flex;padding:3px 9px;border-radius:99px;background:#fff0d2;color:#b65a1e;font-size:.72rem;font-weight:800;text-transform:uppercase}.training-banner h2{margin:4px 0 0;font-size:1.15rem}.training-banner p{margin:2px 0 0;color:#527482;font-size:.82rem;font-weight:700}
+    .training-chip{flex:none;padding:9px 13px;border-radius:9px;background:#294654;color:#fff;font-size:.85rem;font-weight:800}
+    .timer-card{border:2px solid #1c3947;box-shadow:0 6px 0 rgba(28,57,71,.12)}.timer-ring{transition:border-color .3s,box-shadow .3s}.timer-card:has(#toggleButton[aria-label="Pausar temporizador"]) .timer-ring{box-shadow:0 0 0 7px #ef7b2426,inset 0 0 0 5px #ffffff13}
+    .stats-panel,.settings-panel,.recent-panel,.focus-panel{border-width:2px;border-radius:11px;box-shadow:0 4px 0 rgba(36,72,84,.07)}
+    @media(max-width:900px){.top-nav{flex-wrap:wrap;gap:8px 14px;padding:9px 16px}.game-nav{order:3;flex:1 1 100%;overflow-x:auto}.nav-user{margin-left:auto}.workspace{width:min(100% - 32px,760px);padding-top:16px}.session-layout{grid-template-columns:1fr}.side-stack{grid-template-columns:1fr 1fr}}
+    @media(max-width:680px){.top-nav{gap:7px;padding:8px 10px}.wordmark{font-size:.95rem}.wordmark span{font-size:1rem}.game-nav a{min-height:34px;padding:5px 9px;font-size:.77rem}.nav-user{gap:5px}.nav-user-name{display:none}.nav-user .mentor-avatar{width:30px;height:30px}.nav-streak,.nav-profile{min-height:30px;padding:4px 7px;font-size:.7rem}.workspace{width:calc(100% - 22px);padding:13px 0 24px}.topline{align-items:flex-start}.heading h1{font-size:1.45rem}.heading p{font-size:.8rem}.training-banner{align-items:flex-start;flex-direction:column;padding:13px}.training-chip{width:100%;text-align:center}.session-layout,.side-stack{grid-template-columns:1fr}.timer-card{min-height:380px;padding:17px}.timer-ring{width:min(65vw,225px)}.bottom-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top-nav">
+      <a class="wordmark" href="index.html">STUDY <span>PLAY</span></a>
+      <nav class="game-nav" aria-label="Navegación del juego"><a href="index.html#map">🗺️ Mapa</a><a href="matematicas.html">🔢 Matemáticas</a><a href="#timer" aria-current="page">⏱ Sala Pomodoro</a></nav>
+      <div class="nav-user"><span class="mentor-avatar" id="navMentorAvatar" aria-hidden="true"></span><span class="nav-user-name"><strong id="navUserName">Invitado</strong><span id="mentorName">Sin mentor</span></span><span class="nav-streak" id="streak">🔥 0 días</span><a class="nav-profile" href="perfil.html">Perfil ↗</a></div>
+    </header>
+    <main class="workspace">
+      <header class="topline"><div class="heading"><h1>Sala de Entrenamiento</h1><p id="subjectSubtitle">Sesión Pomodoro · Matemáticas</p></div></header>
+      <section class="training-banner"><div class="training-copy"><span class="training-tag">🍅 Zona de concentración</span><h2>Una ronda a la vez</h2><p>Completa una sesión para sumar tiempo y experiencia en Matemáticas.</p></div><span class="training-chip">🎯 Enfoque activo</span></section>
+      <div class="session-layout" id="timer">
+        <section class="timer-card" aria-labelledby="timerTitle">
+          <div class="timer-heading"><h2 id="timerTitle">🍅 Pomodoro</h2><span class="session-count" id="sessionCount">Sesiones 0</span></div>
+          <p class="mode-label" id="modeLabel">Sesión de enfoque</p>
+          <div class="timer-ring"><div><div class="timer-display" id="timerDisplay" aria-live="off">25:00</div><div class="timer-state" id="timerState">Lista para empezar</div></div></div>
+          <div class="timer-controls"><button class="round-button" type="button" id="resetButton" aria-label="Reiniciar">↻</button><button class="round-button main" type="button" id="toggleButton" aria-label="Iniciar temporizador">▶</button><button class="round-button" type="button" id="skipButton" aria-label="Saltar intervalo">⏭</button></div>
+          <div class="session-metrics"><div class="metric"><strong id="focusMinutes">0 min</strong><span>Tiempo enfocado</span></div><div class="metric"><strong id="completedCount">0</strong><span>Sesiones</span></div><div class="metric"><strong id="breakMinutes">0 min</strong><span>Descansos</span></div></div>
+        </section>
+        <div class="side-stack">
+          <section class="stats-panel" aria-labelledby="weeklyTitle"><h2>▥ Estadísticas de Matemáticas</h2><div class="stats-grid"><div class="stat"><strong id="weekHours">0 min</strong><span>Estudiado esta semana</span></div><div class="stat"><strong id="allSessions">0</strong><span>Sesiones completadas</span></div><div class="stat"><strong id="dailyAverage">0 min</strong><span>Promedio por día</span></div><div class="stat"><strong id="studyStreak">0 días</strong><span>Racha de estudio</span></div></div><h3 class="week-title" id="weeklyTitle">Horas por día · esta semana</h3><div class="week-chart" id="weekChart" role="img" aria-label="Tiempo de estudio semanal"></div></section>
+          <section class="settings-panel"><h2>⚙ Configuración de sesión</h2><div class="settings-grid"><div class="setting"><label for="focusDuration">Duración Pomodoro</label><select id="focusDuration"><option value="25">25 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="50">50 min</option></select></div><div class="setting"><label for="shortBreak">Descanso corto</label><select id="shortBreak"><option value="5">5 min</option><option value="3">3 min</option><option value="10">10 min</option></select></div><div class="setting"><label for="longBreak">Descanso largo</label><select id="longBreak"><option value="15">15 min</option><option value="10">10 min</option><option value="20">20 min</option></select></div><div class="setting"><label for="longEvery">Sesiones hasta descanso largo</label><select id="longEvery"><option value="4">4 sesiones</option><option value="3">3 sesiones</option><option value="5">5 sesiones</option></select></div></div></section>
+        </div>
+      </div>
+      <div class="bottom-grid"><section class="recent-panel"><h2>◷ Sesiones recientes</h2><div class="recent-list" id="recentSessions"></div></section><section class="focus-panel"><h2>◎ Sesión enfocada</h2><p class="focus-copy">Las horas se suman a Matemáticas solo al completar el temporizador. Los descansos no aumentan el tiempo estudiado.</p><a class="back-link" href="matematicas.html">← Volver a tareas de Matemáticas</a></section></div>
+    </main>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const subjectId = params.get("materia") || "matematicas";
+    const subjectNames = { matematicas: "Matemáticas" };
+    const subjectName = subjectNames[subjectId] || "Matemáticas";
+    const user = (() => { try { return JSON.parse(localStorage.getItem("studyPlayUser") || "null"); } catch { return null; } })();
+    const owner = (user?.email || user?.nombre || "guest").toLowerCase();
+    const studyKey = `studyPlayStudy:${subjectId}:${owner}`;
+    let data = { minutes: 0, sessions: [], breaks: 0, breakMinutes: 0 };
+    try { data = { ...data, ...JSON.parse(localStorage.getItem(studyKey) || "{}") }; } catch { /* Start with an empty study record. */ }
+    let mode = "focus";
+    let remaining = 25 * 60;
+    let timerId = null;
+
+    const elements = {
+      display: document.getElementById("timerDisplay"), state: document.getElementById("timerState"), mode: document.getElementById("modeLabel"),
+      toggle: document.getElementById("toggleButton"), focusDuration: document.getElementById("focusDuration"), shortBreak: document.getElementById("shortBreak"),
+      longBreak: document.getElementById("longBreak"), longEvery: document.getElementById("longEvery")
+    };
+    const dayStart = date => { const result = new Date(date); result.setHours(0,0,0,0); return result; };
+    const weekStart = date => { const result = dayStart(date); result.setDate(result.getDate() - ((result.getDay() + 6) % 7)); return result; };
+    const formatMinutes = minutes => minutes >= 60 ? `${(minutes / 60).toFixed(1)} h` : `${minutes} min`;
+
+    function saveData() { localStorage.setItem(studyKey, JSON.stringify(data)); }
+    function renderClock() {
+      const min = Math.floor(remaining / 60).toString().padStart(2, "0");
+      const sec = (remaining % 60).toString().padStart(2, "0");
+      elements.display.textContent = `${min}:${sec}`;
+    }
+    function setMode(nextMode) {
+      mode = nextMode;
+      const duration = mode === "focus" ? Number(elements.focusDuration.value) : mode === "short" ? Number(elements.shortBreak.value) : Number(elements.longBreak.value);
+      remaining = duration * 60;
+      elements.mode.textContent = mode === "focus" ? `Sesión de enfoque · ${subjectName}` : mode === "short" ? "Descanso corto" : "Descanso largo";
+      elements.state.textContent = mode === "focus" ? "Lista para empezar" : "Tómate un descanso";
+      elements.toggle.setAttribute("aria-label", "Iniciar temporizador");
+      elements.toggle.textContent = "▶";
+      renderClock();
+    }
+    function renderStats() {
+      const now = new Date();
+      const start = weekStart(now);
+      const sessions = data.sessions.filter(session => new Date(session.date) >= start);
+      const weeklyMinutes = sessions.reduce((sum, session) => sum + session.minutes, 0);
+      const studiedDays = new Set(data.sessions.map(session => dayStart(session.date).toISOString().slice(0,10)));
+      let streak = 0;
+      const cursor = dayStart(now);
+      if (!studiedDays.has(cursor.toISOString().slice(0,10))) cursor.setDate(cursor.getDate() - 1);
+      while (studiedDays.has(cursor.toISOString().slice(0,10))) { streak += 1; cursor.setDate(cursor.getDate() - 1); }
+      document.getElementById("focusMinutes").textContent = formatMinutes(data.minutes);
+      document.getElementById("completedCount").textContent = data.sessions.length;
+      document.getElementById("breakMinutes").textContent = formatMinutes(data.breakMinutes);
+      document.getElementById("sessionCount").textContent = `Sesiones ${data.sessions.length % Number(elements.longEvery.value)}`;
+      document.getElementById("weekHours").textContent = formatMinutes(weeklyMinutes);
+      document.getElementById("allSessions").textContent = data.sessions.length;
+      document.getElementById("dailyAverage").textContent = formatMinutes(Math.round(weeklyMinutes / 7));
+      document.getElementById("studyStreak").textContent = `${streak} ${streak === 1 ? "día" : "días"}`;
+      const labels = ["L","M","X","J","V","S","D"];
+      const chart = document.getElementById("weekChart");
+      chart.replaceChildren();
+      const values = labels.map((_, index) => {
+        const date = new Date(start); date.setDate(date.getDate() + index);
+        return sessions.filter(session => dayStart(session.date).getTime() === date.getTime()).reduce((sum, session) => sum + session.minutes, 0);
+      });
+      const max = Math.max(...values, 1);
+      values.forEach((value, index) => {
+        const day = document.createElement("div"); day.className = "day";
+        const bar = document.createElement("span"); bar.className = `day-bar${value ? " active" : ""}`;
+        bar.style.height = `${Math.max(value ? 9 : 5, Math.round(value / max * 56))}px`;
+        const label = document.createElement("span"); label.textContent = labels[index];
+        day.title = `${value} minutos`;
+        day.append(bar, label); chart.appendChild(day);
+      });
+      const recent = document.getElementById("recentSessions");
+      recent.replaceChildren();
+      const recentSessions = [...data.sessions].reverse().slice(0, 4);
+      if (!recentSessions.length) {
+        const empty = document.createElement("p");
+        empty.className = "recent-empty";
+        empty.textContent = "Tus sesiones completadas aparecerán aquí.";
+        recent.appendChild(empty);
+      }
+      recentSessions.forEach(session => {
+        const item = document.createElement("div");
+        item.className = "recent-item";
+        const date = document.createElement("span");
+        date.textContent = new Intl.DateTimeFormat("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(session.date));
+        const duration = document.createElement("strong");
+        duration.textContent = `${session.minutes} min`;
+        item.append(date, duration);
+        recent.appendChild(item);
+      });
+    }
+    function completeInterval() {
+      clearInterval(timerId); timerId = null;
+      elements.toggle.textContent = "▶";
+      elements.toggle.setAttribute("aria-label", "Iniciar temporizador");
+      if (mode === "focus") {
+        const minutes = Number(elements.focusDuration.value);
+        const now = new Date();
+        data.minutes += minutes;
+        data.sessions.push({ date: now.toISOString(), minutes });
+        saveData(); renderStats();
+        elements.state.textContent = "¡Sesión completada! Buen trabajo.";
+        const every = Number(elements.longEvery.value);
+        setTimeout(() => setMode(data.sessions.length % every === 0 ? "long" : "short"), 900);
+      } else {
+        const minutes = mode === "short" ? Number(elements.shortBreak.value) : Number(elements.longBreak.value);
+        data.breaks += 1; data.breakMinutes += minutes;
+        saveData(); renderStats();
+        elements.state.textContent = "Descanso terminado. Vuelve al enfoque.";
+        setTimeout(() => setMode("focus"), 900);
+      }
+      remaining = 0; renderClock();
+    }
+    elements.toggle.addEventListener("click", () => {
+      if (timerId) {
+        clearInterval(timerId); timerId = null;
+        elements.state.textContent = "En pausa";
+        elements.toggle.textContent = "▶";
+        elements.toggle.setAttribute("aria-label", "Reanudar temporizador");
+        return;
+      }
+      elements.state.textContent = mode === "focus" ? "Enfócate en una sola tarea" : "Tu descanso está en marcha";
+      elements.toggle.textContent = "Ⅱ";
+      elements.toggle.setAttribute("aria-label", "Pausar temporizador");
+      timerId = setInterval(() => { remaining -= 1; renderClock(); if (remaining <= 0) completeInterval(); }, 1000);
+    });
+    document.getElementById("resetButton").addEventListener("click", () => { clearInterval(timerId); timerId = null; setMode(mode); });
+    document.getElementById("skipButton").addEventListener("click", () => {
+      clearInterval(timerId); timerId = null;
+      if (mode === "focus") elements.state.textContent = "Sesión omitida; no se añadió tiempo.";
+      setMode(mode === "focus" ? "short" : "focus");
+    });
+    elements.focusDuration.addEventListener("change", () => { if (mode === "focus" && !timerId) setMode("focus"); });
+    elements.shortBreak.addEventListener("change", () => { if (mode === "short" && !timerId) setMode("short"); });
+    elements.longBreak.addEventListener("change", () => { if (mode === "long" && !timerId) setMode("long"); });
+    elements.longEvery.addEventListener("change", renderStats);
+    document.getElementById("subjectSubtitle").textContent = `Sesión Pomodoro · ${subjectName}`;
+    if (user) {
+      document.getElementById("navUserName").textContent = user.nombre;
+      document.getElementById("mentorName").textContent = user.mentorName || "Sin mentor";
+      const streak = Number(user.racha) || 0;
+      document.getElementById("streak").textContent = `🔥 ${streak} ${streak === 1 ? "día" : "días"}`;
+      if (user.mentorId === "zorro-spark") {
+        document.getElementById("navMentorAvatar").classList.add("zorro-spark");
+      }
+    }
+    renderStats(); setMode("focus");
+  </script>
+</body>
+</html>
