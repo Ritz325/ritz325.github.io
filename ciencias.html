@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Play</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== 1. TOKENS (el acento --ac cambia por materia desde materia.js) ===== */
+:root{
+  --font:"Baloo 2",system-ui,sans-serif;
+  --ac:#3358d6;--ac-d:#233f9e;--ac-l:#dfe7ff;--ac-t:#233f9e;
+  --orange:#ef7b24;--orange-d:#b85618;--sea:#35b6f0;--sea-d:#1683c9;
+  --grass:#7ed957;--grass-d:#3fae3a;--rock:#8b6b4a;--rock-d:#6b4f35;
+  --wood:#a8683a;--wood-d:#6b3d1c;--cream:#fff3d6;--gold:#ffc933;--gold-d:#d9a512;
+  --green:#4c9e50;--green-d:#357a39;--ink:#284652;--navy:#294654;
+  font-family:var(--font);color:var(--ink);font-synthesis:none;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:linear-gradient(#8fdcff,var(--sea) 40%,var(--sea-d));background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+button,a,input,select{touch-action:manipulation}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* ===== 2. BARRA SUPERIOR ===== */
+.bar-top{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:10px;padding:8px 16px;background:var(--orange);color:#fff;border-bottom:4px solid var(--orange-d);box-shadow:0 4px 0 var(--orange-d)}
+.logo{display:flex;align-items:center;gap:9px;font-size:1.15rem;font-weight:800;white-space:nowrap}
+.fox{width:38px;height:38px;flex:none;display:grid;place-items:center;overflow:hidden;background:#091c4b;border:2px solid #fff;border-radius:10px;font-size:1.5rem}
+.fox img{width:100%;height:100%;object-fit:cover}
+.spacer{flex:1}
+.switch{display:flex;gap:5px;margin-left:8px}
+.switch a{min-height:36px;display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;background:#ffffff33;font-weight:800;font-size:.85rem;white-space:nowrap}
+.switch a:hover{background:#ffffff55}
+.switch a[aria-current=page]{background:#fff;color:var(--ac-d);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.chip{min-height:36px;display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;background:#fff;color:var(--ink);font-size:.85rem;font-weight:800;white-space:nowrap;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.chip.back{background:var(--ac);color:#fff}
+.avatar{width:42px;height:42px;display:grid;place-items:center;border:3px solid var(--cream);border-radius:11px;background:#dff2f5;font-size:1.1rem;font-weight:800}
+
+/* ===== 3. MUNDO Y BOTONES ===== */
+.world{width:min(100% - 24px,1120px);margin:0 auto;padding:18px 0 40px;display:grid;gap:18px}
+.wood{color:var(--cream);background:repeating-linear-gradient(180deg,var(--wood) 0 30px,#9a5c31 30px 32px);border:4px solid var(--wood-d);border-radius:14px;box-shadow:0 6px 0 var(--wood-d);text-shadow:0 2px 0 var(--wood-d)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:8px 16px;border:0;border-radius:13px;color:#fff;font-weight:800;cursor:pointer;transition:transform .12s,filter .12s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn:active{transform:translateY(3px)}
+.btn.orange{background:var(--orange);box-shadow:0 5px 0 var(--orange-d)}
+.btn.accent{background:var(--ac);box-shadow:0 5px 0 var(--ac-d)}
+.btn.green{background:var(--green);box-shadow:0 5px 0 var(--green-d)}
+.btn.gray{background:#dfe8ea;color:#40565d;box-shadow:0 5px 0 #b3c2c5}
+
+/* ===== 4. HÉROE: LETRERO DEL ZORRO + ANILLO ===== */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:24px;align-items:center}
+.sign{position:relative;padding:24px 28px 24px 112px;display:grid;gap:10px;min-height:256px;align-content:center;background:linear-gradient(120deg,#fff3d6,#fff8e9 54%,var(--ac-l));border:3px solid #d9b98a;border-left:8px solid var(--ac);border-radius:18px;box-shadow:0 7px 0 var(--rock-d)}
+.sign .fox{position:absolute;left:14px;top:50%;translate:0 -50%;width:80px;height:80px;font-size:2.8rem;border-radius:18px;border:4px solid #fff;box-shadow:0 5px 0 var(--orange-d);animation:bob 2.4s ease-in-out infinite;cursor:pointer}
+.sign .fox.hop{animation:hop .6s}
+.sign h1{margin:0;color:var(--ac-d);font-size:2.4rem;line-height:1.03}
+.ribbon{width:max-content;max-width:100%;padding:4px 12px;background:var(--ac-l);border:1px solid var(--ac);border-radius:99px;color:var(--ac-t);font-size:.78rem;font-weight:800}
+.say{width:max-content;max-width:100%;margin:0;padding:5px 13px;background:#fff;border:1px solid #f3d19a;border-radius:10px;color:var(--wood-d);font-weight:800}
+.lv{display:flex;justify-content:space-between;gap:12px;color:var(--navy);font-weight:800;font-size:.9rem}
+.meter{height:18px;border:3px solid var(--wood-d);border-radius:99px;background:#5a3418;overflow:hidden}
+.meter>i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,#ffd24d 0 10px,#ffbb1f 10px 20px);transition:width .6s cubic-bezier(.3,1.4,.5,1)}
+.sign-actions{display:flex;flex-wrap:wrap;gap:8px}
+.obs{display:grid;justify-items:center;gap:10px}
+.ring{--p:0%;width:148px;height:148px;display:grid;place-items:center;border:5px solid #fff;border-radius:50%;background:conic-gradient(var(--green) var(--p),#ffffff78 0);box-shadow:0 7px 0 rgba(0,0,0,.2)}
+.ring-in{width:116px;height:116px;display:grid;place-items:center;font-size:3.2rem;background:radial-gradient(var(--ac),var(--ac-d));border:4px solid #fff;border-radius:50%}
+.pill{padding:4px 15px;border-radius:99px;background:rgba(30,60,60,.82);color:#fff;font-weight:800;font-size:.9rem}
+
+/* ===== 5. ISLA DE MISIONES ===== */
+.island{position:relative;padding:22px 18px 30px;background:linear-gradient(var(--grass),var(--grass-d));border:5px solid #d9b98a;border-bottom:16px solid var(--rock);border-radius:40px 40px 60px 60px;box-shadow:0 8px 0 var(--rock-d),0 20px 30px rgba(0,0,0,.2);overflow:hidden}
+.island h2{display:inline-block;margin:0 0 14px;padding:3px 18px;font-size:1.15rem;background:var(--ac);color:#fff;border:3px solid #fff;border-radius:99px;box-shadow:0 4px 0 var(--ac-d)}
+.deco{position:absolute;font-size:2rem;pointer-events:none}
+.stops{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px 0;padding-bottom:40px}
+.stop{position:relative;display:grid;justify-items:center;gap:4px;padding:0 4px;background:none;border:0;cursor:pointer;color:inherit}
+.stop:nth-child(even){margin-top:46px;margin-bottom:-46px}
+.stop:not(:last-child)::before{content:"";position:absolute;left:50%;top:60px;width:100%;border-top:7px dotted #f3dfae}
+.stars{z-index:1;font-size:.8rem;letter-spacing:1px;filter:grayscale(1);opacity:.55}
+.stop.done .stars{filter:none;opacity:1}
+.orb{position:relative;z-index:1;width:82px;height:82px;display:grid;place-items:center;font-size:2rem;background:radial-gradient(var(--ac),var(--ac-d));border:5px solid #fff;border-radius:50%;box-shadow:0 5px 0 var(--ac-d);transition:transform .15s}
+.stop:hover .orb,.stop[aria-pressed=true] .orb{transform:scale(1.12)}
+.stop.done .orb{background:radial-gradient(#6be6a5,var(--green))}
+.stop.next .orb{animation:pulse 1.4s infinite}
+.stop.entering .orb{animation:pop .4s}
+.stop[aria-pressed=true]::after{content:"👇";position:absolute;top:-16px;animation:bob 1s infinite}
+.label{z-index:1;max-width:130px;padding:1px 12px;border-radius:99px;background:rgba(30,60,60,.78);color:#fff;font-weight:800;font-size:.8rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ===== 6. PANELES ===== */
+.panels{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+.rail{display:grid;gap:18px}
+.card{padding:16px 18px;background:#fffefa;border:4px solid #fff;border-radius:20px;box-shadow:0 6px 0 rgba(0,0,0,.16)}
+.card h2{margin:0 0 10px;font-size:1.05rem}
+.quest-sign{padding:16px 20px;display:grid;gap:10px}
+.quest-sign .row{display:flex;align-items:center;gap:12px}
+.quest-sign .big{width:60px;height:60px;flex:none;display:grid;place-items:center;font-size:2rem;background:var(--ac);border:4px solid #fff;border-radius:16px;text-shadow:none}
+.quest-sign h2{margin:0;font-size:1.25rem;line-height:1.05}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:2px 10px;border-radius:99px;background:var(--cream);color:var(--wood-d);font-weight:800;font-size:.78rem;text-shadow:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{display:grid;padding:8px 10px;border-radius:14px;line-height:1.1}
+.stat span{font-size:.72rem;font-weight:700;color:#5f777d}.stat strong{font-size:1.25rem}
+.stat:nth-child(1){background:#dff8ff}.stat:nth-child(2){background:#dff1dc}.stat:nth-child(3){background:#ffedda}
+.stat:nth-child(4){background:#e8e0ff}.stat:nth-child(5){background:#fff0d2}.stat:nth-child(6){background:#e5f2f4}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.badge{display:grid;justify-items:center;gap:2px;padding:8px 4px;border-radius:14px;background:#fff0d2;text-align:center;font-size:.7rem;font-weight:800;line-height:1.05}
+.badge b{display:grid;place-items:center;width:44px;height:44px;font-size:1.5rem;background:#fff;border:3px solid var(--gold);border-radius:50%}
+.badge.lock{background:#edf1f2;color:#8b9ca0}.badge.lock b{filter:grayscale(1);opacity:.5;border-color:#c3d0d3}
+.chest{display:flex;align-items:center;gap:14px}
+.chest button{width:84px;height:84px;font-size:3rem;background:#fff0d2;border:4px solid var(--gold);border-radius:20px;cursor:pointer;box-shadow:0 5px 0 var(--gold-d)}
+.chest button:disabled{filter:grayscale(1);opacity:.55;cursor:not-allowed}
+.chest button.ready{animation:wiggle .8s infinite}
+.chest p{margin:0;font-weight:700;font-size:.9rem}
+
+/* ===== 7. DIÁLOGOS Y EFECTOS ===== */
+dialog{width:min(100% - 28px,400px);padding:22px;border:4px solid #fff;border-radius:22px;background:#fffefa;color:var(--ink);box-shadow:0 15px 45px #112b3b66}
+dialog::backdrop{background:#0e3a5c88}
+dialog h2{margin:0 0 12px}
+.field{display:grid;gap:3px;margin-bottom:10px;font-weight:800;font-size:.85rem}
+.field input,.field select{width:100%;min-height:42px;padding:6px 10px;border:3px solid #cfe6ec;border-radius:12px;background:#fff}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.center{text-align:center}.center .big{font-size:4rem;animation:hop .7s}
+.toast{position:fixed;right:16px;bottom:16px;z-index:20;padding:10px 16px;border:3px solid var(--wood-d);border-radius:14px;background:var(--wood);color:var(--cream);font-weight:800;box-shadow:0 5px 0 var(--wood-d);animation:pop .3s}
+.toast[hidden]{display:none}
+.float{position:fixed;z-index:30;pointer-events:none;font-weight:800;font-size:1.5rem;color:#fff;text-shadow:0 2px 0 var(--orange-d),0 0 10px var(--orange);animation:rise 1s ease-out forwards}
+.confetti{position:fixed;z-index:30;width:10px;height:14px;border-radius:2px;pointer-events:none;animation:fall 1.2s ease-out forwards}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@keyframes hop{30%{transform:translateY(-24px) scale(1.1)}60%{transform:translateY(0) scale(.95,1.05)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{50%{box-shadow:0 5px 0 var(--ac-d),0 0 0 12px #ffc93377}}
+@keyframes wiggle{25%{rotate:-6deg}75%{rotate:6deg}}
+@keyframes rise{to{transform:translateY(-80px);opacity:0}}
+@keyframes fall{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+
+/* ===== 8. RESPONSIVE ===== */
+@media(max-width:900px){.switch a span{display:none}}
+@media(max-width:820px){.hero,.panels{grid-template-columns:1fr}.obs{display:flex;justify-content:center;gap:14px}.ring{width:108px;height:108px}.ring-in{width:82px;height:82px;font-size:2.4rem}}
+@media(max-width:560px){
+  .chip.streak,.switch{display:none}.stats{grid-template-columns:1fr 1fr}
+  .stop:nth-child(even){margin-top:30px;margin-bottom:-30px}
+  .sign{min-height:0;padding:82px 16px 17px}.sign .fox{left:14px;top:10px;translate:none;width:62px;height:62px;font-size:2.2rem}
+  .sign h1{font-size:1.8rem}.hero{gap:14px}.bar-top{gap:7px;padding:7px 10px}
+  .chip{min-height:32px;padding:4px 8px;font-size:.75rem}.avatar{width:36px;height:36px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<script>
+/* ===== CONFIGURACIÓN DE LA MATERIA ===== */
+window.MATERIA = {
+  slug: "ciencias", name: "Ciencias Naturales", title: "Zona de Ciencias Naturales",
+  chapter: "🌱 MUNDO 03 · LABORATORIO VIVO",
+  color: "#2f9e44", colorDark: "#1f7a33", colorLight: "#dcf5e0",
+  ringIcon: "🌱", icon: "🔬", chest: "🧪", crown: "🌍",
+  icons: { "Plantas": "🌱", "Laboratorio": "🔬", "Agua": "💧", "Animales": "🦋", "Planeta": "🌍" },
+  deco: [["🌿", "left:10px;top:52px"], ["🦋", "right:14px;top:60px"], ["🔬", "left:14px;bottom:6px"], ["🌴", "right:20px;bottom:4px"]],
+  says: { start: "¡Vamos! Hora de explorar la naturaleza.", mid: "¡Buen trabajo, científico!", win: "¡Descubriste todo el laboratorio! 🏆",
+          poke: ["¡La curiosidad es tu superpoder!", "¡Observa, pregunta, descubre!", "¡Un experimento más y subes de nivel!"] },
+  seed: [
+    { id: "c1", title: "Experimento: germina un frijol", subject: "Plantas", due: "", priority: "alta", completed: false },
+    { id: "c2", title: "El ciclo del agua", subject: "Agua", due: "", priority: "media", completed: false },
+    { id: "c3", title: "Laboratorio: usa el microscopio", subject: "Laboratorio", due: "", priority: "alta", completed: false },
+    { id: "c4", title: "Animales y sus hábitats", subject: "Animales", due: "", priority: "baja", completed: false }
+  ]
+};
+</script>
+<script>
+/* Study Play · página de materia. Lee la configuración de window.MATERIA. */
+(() => {
+const M = window.MATERIA;
+const MATERIAS = [
+  { href:"matematicas.html", icon:"🔢", name:"Matemáticas" },
+  { href:"espanol.html", icon:"📖", name:"Español" },
+  { href:"ciencias.html", icon:"🌱", name:"Ciencias" }
+];
+
+/* ===== A. TEMA Y ESTRUCTURA ===== */
+const root = document.documentElement.style;
+root.setProperty("--ac", M.color); root.setProperty("--ac-d", M.colorDark);
+root.setProperty("--ac-l", M.colorLight); root.setProperty("--ac-t", M.colorDark);
+document.title = `${M.name} · Study Play`;
+const FOX = `<img src="imagen_oficial_zorro_spark.jpg" alt="" onerror="this.replaceWith('🦊')">`;
+document.body.insertAdjacentHTML("afterbegin", `
+<header class="bar-top">
+  <a class="logo" href="index.html#map" aria-label="Volver a la isla"><span class="fox">${FOX}</span><span>STUDY PLAY</span></a>
+  <nav class="switch" aria-label="Materias">${MATERIAS.map(m => `<a href="${m.href}"${m.name === M.name ? ' aria-current="page"' : ""}>${m.icon} <span>${m.name}</span></a>`).join("")}</nav>
+  <span class="spacer"></span>
+  <a class="chip back" href="index.html#map">🏝️ Volver a la isla</a>
+  <span class="chip streak" id="streak">🔥 0 días</span>
+  <span class="chip" title="Monedas">🪙 <b id="coins">0</b></span>
+  <a class="avatar" href="perfil.html" id="avatar" aria-label="Perfil">🙂</a>
+</header>
+<main class="world">
+  <section class="hero" aria-labelledby="title">
+    <div class="sign">
+      <div class="fox" id="mascot" role="button" tabindex="0" aria-label="Tocar al zorro">${FOX}</div>
+      <span class="ribbon">${M.chapter}</span>
+      <h1 id="title">${M.title}</h1>
+      <p class="say" id="say">¡Hola, explorador!</p>
+      <div class="lv"><span id="levelTxt">Nivel 1</span><span id="xpTxt">0 / 100 XP</span></div>
+      <div class="meter"><i id="xpFill"></i></div>
+      <div class="sign-actions">
+        <a class="btn orange" href="estudio.html?materia=${M.slug}">⏱ Entrenar con Pomodoro</a>
+        <button class="btn accent" type="button" id="openDialog">＋ Nueva misión</button>
+      </div>
+    </div>
+    <div class="obs">
+      <div class="ring" id="ring" role="img" aria-label="Progreso de misiones"><div class="ring-in" aria-hidden="true">${M.ringIcon}</div></div>
+      <span class="pill" id="ringLabel">0 de 0</span>
+    </div>
+  </section>
+  <section class="island" aria-label="Camino de misiones">
+    ${M.deco.map(([e, pos]) => `<span class="deco" style="${pos}" aria-hidden="true">${e}</span>`).join("")}
+    <h2>🗺️ Camino de misiones</h2>
+    <div class="stops" id="stops"></div>
+  </section>
+  <div class="panels">
+    <section class="wood quest-sign" id="detail" aria-live="polite"></section>
+    <div class="rail">
+      <section class="card"><h2>🏆 Tu avance</h2><div class="stats">
+        <div class="stat"><span>Misiones</span><strong id="total">0</strong></div>
+        <div class="stat"><span>Ganadas</span><strong id="done">0</strong></div>
+        <div class="stat"><span>Por ganar</span><strong id="pending">0</strong></div>
+        <div class="stat"><span>Estudio</span><strong id="minutes">0 min</strong></div>
+        <div class="stat"><span>Sesiones</span><strong id="sessions">0</strong></div>
+        <div class="stat"><span>Progreso</span><strong id="percent">0%</strong></div>
+      </div></section>
+      <section class="card"><h2>🎖️ Insignias</h2><div class="badges" id="badges"></div></section>
+      <section class="card chest"><button type="button" id="chest" aria-label="Cofre del tesoro">🎁</button><p id="chestTxt"></p></section>
+    </div>
+  </div>
+</main>
+<dialog id="taskDialog"><form method="dialog" id="dialogForm">
+  <h2>✨ Nueva misión</h2>
+  <label class="field">Nombre<input name="title" maxlength="90" required placeholder="¿Qué reto vas a completar?"></label>
+  <label class="field">Fecha límite<input name="due" type="date"></label>
+  <label class="field">Dificultad<select name="priority"><option value="alta">Alta ⭐⭐⭐</option><option value="media" selected>Media ⭐⭐</option><option value="baja">Baja ⭐</option></select></label>
+  <div class="actions"><button class="btn gray" value="cancel">Cancelar</button><button class="btn accent" id="saveDialog" value="default">Crear misión</button></div>
+</form></dialog>
+<dialog id="levelDialog"><div class="center"><div class="big">🎉</div><h2>¡Subiste al nivel <span id="newLevel"></span>!</h2><p>El zorro está orgulloso de ti.</p><form method="dialog"><button class="btn orange">¡Genial!</button></form></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div>`);
+
+/* ===== B. DATOS ===== */
+const Store = {
+  read(k, d){ try { return JSON.parse(localStorage.getItem(k) || "null") ?? d; } catch { return d; } },
+  write(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const user = Store.read("studyPlayUser", null);
+const owner = (user?.email || user?.nombre || "guest").toLowerCase();
+const KEYS = { tasks:`studyPlayTasks:${M.slug}:${owner}`, study:`studyPlayStudy:${M.slug}:${owner}`, chest:`studyPlayChest:${M.slug}:${owner}` };
+const state = { tasks:Store.read(KEYS.tasks, M.seed), sel:null, chestOpened:Store.read(KEYS.chest, false) };
+
+/* ===== C. REGLAS DEL JUEGO ===== */
+const XP = { alta:60, media:40, baja:25 }, STARS = { alta:3, media:2, baja:1 };
+const iconFor = t => M.icons[t.subject] || M.icon;
+const needFor = lvl => 100 + (lvl - 1) * 50;
+const minutes = () => Number(Store.read(KEYS.study, {}).minutes) || 0;
+const doneCount = () => state.tasks.filter(t => t.completed).length;
+const totalXP = () => state.tasks.filter(t => t.completed).reduce((s, t) => s + (XP[t.priority] || 0), 0) + minutes() * 2;
+const coins = () => doneCount() * 10 + Math.floor(minutes() / 5) + (state.chestOpened ? 50 : 0);
+const streakDays = () => Number(user?.racha) || 0;
+function levelInfo(xp){ let lv = 1; while (xp >= needFor(lv)) { xp -= needFor(lv); lv++; } return { lv, into:xp, need:needFor(lv) }; }
+const BADGES = [
+  ["🥇","Primera misión", s => s.done >= 1],
+  ["🔥","Racha de 3 días", s => s.streak >= 3],
+  ["🗺️","Mitad del camino", s => s.total && s.done * 2 >= s.total],
+  ["⏱","30 min de estudio", s => s.min >= 30],
+  ["🚀","Nivel 3", s => s.lv >= 3],
+  [M.crown,"Isla completada", s => s.total && s.done === s.total]
+];
+let knownBadges = null;
+
+/* ===== D. UTILIDADES Y EFECTOS ===== */
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let toastTimer;
+function toast(m){ const t = $("toast"); t.textContent = m; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600); }
+function floatText(text, x, y){ const f = el("div", "float", text); f.style.left = x + "px"; f.style.top = y + "px"; document.body.appendChild(f); setTimeout(() => f.remove(), 1000); }
+function confetti(x, y){
+  if (still) return;
+  const colors = [M.color, "#ef7b24", "#ffc933", "#4c9e50", "#35b6f0", "#ff6b9a"];
+  for (let i = 0; i < 30; i++) {
+    const c = el("i", "confetti");
+    c.style.cssText = `left:${x}px;top:${y}px;background:${colors[i % 6]};--dx:${Math.random()*320-160}px;--dy:${Math.random()*260-80}px;--rot:${Math.random()*720-360}deg`;
+    document.body.appendChild(c); setTimeout(() => c.remove(), 1200);
+  }
+}
+function hop(){ const m = $("mascot"); m.classList.remove("hop"); void m.offsetWidth; m.classList.add("hop"); }
+
+/* ===== E. RENDER ===== */
+function renderStops(){
+  const box = $("stops"); box.replaceChildren();
+  const next = state.tasks.findIndex(t => !t.completed);
+  if (!state.tasks.length) box.appendChild(el("p", "say", "La isla está vacía. ¡Crea tu primera misión!"));
+  state.tasks.forEach((t, i) => {
+    const b = el("button", `stop${t.completed ? " done" : i === next ? " next" : ""}${t.fresh ? " entering" : ""}`); delete t.fresh;
+    b.type = "button"; b.setAttribute("aria-pressed", String(t.id === state.sel)); b.setAttribute("aria-label", `${t.title}${t.completed ? ", completada" : ""}`);
+    b.append(el("span", "stars", "⭐".repeat(STARS[t.priority] || 1)), el("span", "orb", t.completed ? "⭐" : iconFor(t)), el("span", "label", t.title));
+    b.addEventListener("click", () => { state.sel = t.id; renderStops(); renderDetail(); });
+    box.appendChild(b);
+  });
+}
+function renderDetail(){
+  const box = $("detail"); box.replaceChildren();
+  const t = state.tasks.find(x => x.id === state.sel);
+  if (!t) { box.appendChild(el("h2", "", "Elige una misión en el mapa 👆")); return; }
+  const row = el("div", "row"), info = el("div");
+  info.append(el("h2", "", t.title), el("small", "", t.subject));
+  row.append(el("div", "big", t.completed ? "✅" : iconFor(t)), info);
+  const date = t.due ? new Intl.DateTimeFormat("es", { day:"numeric", month:"short" }).format(new Date(`${t.due}T12:00:00`)) : "Sin fecha";
+  const tags = el("div", "tags");
+  ["⭐".repeat(STARS[t.priority] || 1), `📅 ${date}`, `+${XP[t.priority] || 0} XP`, "+10 🪙"].forEach(x => tags.appendChild(el("span", "tag", x)));
+  const go = el("button", `btn ${t.completed ? "gray" : "green"}`, t.completed ? "↩ Volver a intentar" : "⭐ ¡Misión cumplida!"); go.type = "button";
+  go.addEventListener("click", e => toggle(t, e));
+  box.append(row, tags, go);
+}
+function renderStats(){
+  const total = state.tasks.length, done = doneCount(), pct = total ? Math.round(done / total * 100) : 0, min = minutes();
+  const { lv, into, need } = levelInfo(totalXP());
+  $("ring").style.setProperty("--p", pct + "%"); $("ringLabel").textContent = `${done} de ${total} · ${pct}%`;
+  $("levelTxt").textContent = `Nivel ${lv}`; $("xpTxt").textContent = `${into} / ${need} XP`; $("xpFill").style.width = Math.round(into / need * 100) + "%";
+  $("say").textContent = !total ? "Crea una misión para jugar." : done === total ? M.says.win : done === 0 ? M.says.start : total - done === 1 ? "¡Solo falta una misión!" : M.says.mid;
+  $("total").textContent = total; $("done").textContent = done; $("pending").textContent = total - done; $("percent").textContent = pct + "%";
+  $("minutes").textContent = min >= 60 ? `${(min / 60).toFixed(1)} h` : `${min} min`;
+  $("sessions").textContent = (Store.read(KEYS.study, {}).sessions || []).length;
+  $("coins").textContent = coins();
+  const s = { done, total, min, lv, streak:streakDays() }, got = new Set(), bx = $("badges"); bx.replaceChildren();
+  BADGES.forEach(([icon, name, test]) => {
+    const ok = Boolean(test(s)); if (ok) got.add(name);
+    const b = el("div", `badge${ok ? "" : " lock"}`); b.append(el("b", "", icon), el("span", "", name)); bx.appendChild(b);
+  });
+  if (knownBadges) got.forEach(n => { if (!knownBadges.has(n)) toast(`🎖️ Nueva insignia: ${n}`); });
+  knownBadges = got;
+  const ready = total > 0 && done === total, c = $("chest");
+  c.disabled = !ready || state.chestOpened; c.classList.toggle("ready", ready && !state.chestOpened);
+  c.textContent = state.chestOpened ? "🪙" : M.chest;
+  $("chestTxt").textContent = state.chestOpened ? "¡Cofre abierto! Ganaste 50 monedas." : ready ? "¡El cofre está listo! Ábrelo." : "Completa todas las misiones para abrir el cofre del tesoro.";
+  return lv;
+}
+function render(){
+  if (!state.tasks.some(t => t.id === state.sel)) state.sel = (state.tasks.find(t => !t.completed) || state.tasks[0])?.id ?? null;
+  renderStops(); renderDetail(); return renderStats();
+}
+
+/* ===== F. ACCIONES Y EVENTOS ===== */
+const save = () => Store.write(KEYS.tasks, state.tasks);
+function toggle(task, e){
+  const before = levelInfo(totalXP()).lv;
+  task.completed = !task.completed; save();
+  if (task.completed) {
+    const r = e.currentTarget.getBoundingClientRect();
+    confetti(r.left + r.width / 2, r.top); floatText(`+${XP[task.priority] || 0} XP  +10 🪙`, r.left + 10, r.top - 8); hop();
+  }
+  const after = render();
+  if (after > before) { $("newLevel").textContent = after; $("levelDialog").showModal(); }
+}
+function addTask({ title, due, priority }){
+  const clean = String(title).trim(); if (!clean) return;
+  const t = { id:crypto.randomUUID(), title:clean, subject:M.name, due:due || "", priority, completed:false, fresh:true };
+  state.tasks.unshift(t); state.sel = t.id; save(); render(); toast("¡Nueva parada en el mapa! 🎯"); hop();
+}
+const dlg = $("taskDialog");
+$("openDialog").addEventListener("click", () => dlg.showModal());
+$("dialogForm").addEventListener("submit", e => {
+  if (e.submitter?.id !== "saveDialog") return;
+  e.preventDefault(); const d = new FormData(e.currentTarget);
+  addTask({ title:d.get("title"), due:d.get("due"), priority:d.get("priority") }); e.currentTarget.reset(); dlg.close();
+});
+const poke = () => { hop(); $("say").textContent = M.says.poke[Math.floor(Math.random() * M.says.poke.length)]; };
+$("mascot").addEventListener("click", poke);
+$("mascot").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); poke(); } });
+$("chest").addEventListener("click", e => {
+  state.chestOpened = true; Store.write(KEYS.chest, true);
+  const r = e.currentTarget.getBoundingClientRect(); confetti(r.left + 40, r.top); floatText("+50 🪙", r.left, r.top - 10); render();
+});
+window.addEventListener("storage", e => { if (e.key === KEYS.study) renderStats(); });
+
+/* ===== G. INICIO ===== */
+const s = streakDays();
+$("streak").textContent = `🔥 ${s} ${s === 1 ? "día" : "días"}`;
+if (user?.nombre) $("avatar").textContent = user.nombre.trim().charAt(0).toUpperCase();
+render();
+})();
+
+</script>
+</body>
+</html>

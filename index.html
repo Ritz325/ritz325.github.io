@@ -131,7 +131,7 @@ const materias = {
 /* ====== DASHBOARD ====== */
 const $ = id => document.getElementById(id);
 const mapImage = $("mapImg");
-mapImage.src = "mapa-pc.png.jpg";
+mapImage.src = "imagen_mapa_pc_final.png";
 $("map").style.setProperty("--map-background", `url("${mapImage.src}")`);
 
 function getCurrentUser() {
@@ -211,7 +211,7 @@ function positionSpots() {
 Object.entries(materias).forEach(([id, m]) => {
   const spot = document.createElement("a");
   spot.className = "spot";
-  spot.href = id === "matematicas" ? "matematicas.html" : "materia.html?id=" + id;
+  spot.href = `${id}.html`;
   spot.dataset.x = m.x;
   spot.dataset.y = m.y + 4;
   spot.style.setProperty("--c", m.color);

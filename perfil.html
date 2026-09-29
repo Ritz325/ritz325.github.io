@@ -76,6 +76,43 @@
     @media(max-width:760px){.topbar{padding-inline:12px}main{width:min(100% - 24px,560px);margin:16px auto 24px}.dashboard{grid-template-columns:1fr}.summary{grid-row:auto}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid{grid-template-columns:1fr}.achievements{grid-column:auto}.page-heading{align-items:start;flex-direction:column}.heading-badges{flex-wrap:wrap}}
     @media(max-width:420px){.topbar{height:54px}.fox{width:36px;height:36px}.brand{font-size:.98rem}.back{font-size:.88rem}.identity{gap:10px}.avatar{width:62px;height:62px}.summary{padding:15px}.stat{min-height:76px;padding:10px}.chart{gap:5px}}
     @media(prefers-reduced-motion:reduce){.xp-fill{transition:none}}
+    :root{--navy:#294654;--cyan:#0c91a3;--orange:#ef7b24;--orange-deep:#b85618;--green:#4c9e50;--purple:#8751ca;--yellow:#ffc933;--sea:#35b6f0;--sea-deep:#1683c9;--cream:#fff3d6;--wood:#a8683a;--wood-deep:#6b3d1c}
+    body{background:linear-gradient(#8fdcff,var(--sea) 40%,var(--sea-deep));background-attachment:fixed}
+    .topbar{height:auto;min-height:60px;gap:12px;padding:8px 16px;background:var(--orange);border-bottom:4px solid var(--orange-deep);box-shadow:0 4px 0 var(--orange-deep);color:#fff}
+    .brand{color:#fff}.fox{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;background-size:contain;background-position:center;background-repeat:no-repeat;border:2px solid #fff}
+    .back{border:0;border-radius:99px;background:#3358d6;color:#fff;box-shadow:0 3px 0 #233f9e}
+    main{width:min(100% - 24px,1120px);margin:20px auto 36px}
+    .profile-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.55fr);align-items:center;gap:22px;margin-bottom:16px;padding:22px 24px;background:linear-gradient(120deg,#fff3d6,#fff8e9 55%,#dff8ff);border:3px solid #d9b98a;border-left:8px solid var(--orange);border-radius:18px;box-shadow:0 7px 0 var(--wood-deep)}
+    .profile-identity{min-width:0;display:flex;align-items:center;gap:18px}
+    .avatar{width:104px;height:104px;background-color:#eaf6ff;border:4px solid #fff;border-radius:18px;box-shadow:0 5px 0 var(--orange-deep)}
+    .avatar.zorro-spark,.avatar.panda-zen,.avatar.gata-luna,.avatar.tortuga-sage{background-position:center;background-size:contain;background-repeat:no-repeat}
+    .avatar.zorro-spark{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen;border-color:#fff}
+    .avatar.panda-zen{background-image:url("imagen_oficial_panda_zen.jpg")}
+    .avatar.gata-luna{background-image:url("imagen_oficial_gata_luna.jpg")}
+    .avatar.tortuga-sage{background-image:url("imagen_oficial_tortuga_sage.jpg")}
+    .profile-copy{min-width:0}.profile-tag{display:inline-flex;padding:4px 10px;border-radius:99px;background:#e2d1f5;color:#7542b7;font-size:.78rem;font-weight:800}
+    .profile-copy h1{margin:7px 0 2px;color:#233f9e;font-size:2rem;line-height:1.05;overflow-wrap:anywhere}
+    .profile-copy p{margin:4px 0 0;color:#527482;font-size:.92rem;font-weight:700;overflow-wrap:anywhere}
+    .profile-copy .mentor-line{color:#294654;font-weight:800}
+    .hero-aside{display:grid;justify-items:end;gap:14px}.heading-badges{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px}
+    .badge{padding:6px 11px;border:1px solid #b6e4f5;border-radius:99px;background:#dff8ff;color:#087e98;font-weight:800;white-space:normal;text-align:center}
+    .badge.streak{background:#fff0d2;border-color:#f5d395;color:#bb5b1c}
+    .hero-xp{width:min(100%,330px);padding:13px 15px;border:2px solid #b6dfe7;border-radius:12px;background:#fff;box-shadow:0 4px 0 rgba(41,70,84,.1)}
+    .level-line{display:flex;justify-content:space-between;gap:8px;margin:0;color:#294654;font-size:.9rem;font-weight:800}.xp-track{height:15px;margin-top:7px;background:#d9e8eb;border:1px solid #a9cbd2}.xp-fill{background:repeating-linear-gradient(-45deg,#ffd24d 0 10px,#ffbb1f 10px 20px)}.xp-caption{margin:6px 0 0;color:#547483;font-size:.78rem;font-weight:700}
+    .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .stat{min-height:96px;padding:13px;border:2px solid;border-radius:13px;box-shadow:0 4px 0 rgba(41,70,84,.12)}
+    .stat strong{font-size:1.45rem}.stat span{font-size:.82rem}
+    .stat.cyan{background:#dff8ff;border-color:#35b6f0;color:#087e98}.stat.orange{background:#ffedda;border-color:var(--orange);color:#b5551c}.stat.green{background:#dff1dc;border-color:var(--green);color:#357a39}.stat.purple{background:#e8e0ff;border-color:var(--purple);color:#7542b7}
+    .lower-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:16px}
+    .panel{padding:17px 18px;border:3px solid #fff;border-radius:14px;box-shadow:0 6px 0 rgba(0,0,0,.13)}
+    .panel h2{font-size:1.08rem;color:#294654}.chart{height:140px;border-bottom:2px solid #b9c9cd}.chart-bar{width:min(100%,31px);background:#cdebf1;border:1px solid #8ccdd4}.chart-bar.active{background:var(--cyan)}
+    .settings{gap:6px}.setting{border:1px solid #dce7e8;border-radius:9px;background:#fbfefe;padding:0 9px}.setting summary{min-height:40px;padding:7px 3px;color:#294654}.setting summary::after{content:"▾"}.setting[open] summary::after{content:"▴"}
+    .setting-body{padding:8px 3px 11px}.setting-body input,.setting-body select{min-height:40px;border:2px solid #cfe6ec;border-radius:8px}.setting-body input:focus,.setting-body select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #0c91a326;outline:none}
+    .setting-body button{min-height:40px;padding:6px 13px;border-radius:8px;background:var(--cyan);box-shadow:0 3px 0 #087281}.setting-body button:hover{background:#10a8b8}
+    .achievements{grid-column:1/-1;padding:16px 0 0;border:0;border-top:3px dotted #f3dfae;border-radius:0;background:transparent;box-shadow:none}.achievement-list{gap:9px}.achievement{padding:8px 12px;border:2px solid;border-radius:12px;font-size:.82rem;box-shadow:0 3px 0 rgba(41,70,84,.1)}
+    .empty{background:linear-gradient(120deg,#fff3d6,#dff8ff);border:3px solid #d9b98a;border-radius:16px;box-shadow:0 6px 0 var(--wood-deep)}.empty a{background:var(--orange);box-shadow:0 3px 0 var(--orange-deep)}
+    @media(max-width:820px){main{width:min(100% - 24px,680px);margin-top:16px}.profile-hero{grid-template-columns:1fr;gap:16px}.hero-aside{justify-items:stretch}.heading-badges{justify-content:flex-start}.hero-xp{width:100%}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid{grid-template-columns:1fr}.achievements{grid-column:auto}}
+    @media(max-width:560px){.topbar{padding:7px 10px}.brand{font-size:.98rem}.fox{width:36px;height:36px}.back{padding:7px 10px;font-size:.78rem}main{width:calc(100% - 22px);margin:13px auto 24px}.profile-hero{padding:16px}.profile-identity{align-items:flex-start;gap:12px}.avatar{width:72px;height:72px;border-radius:14px}.profile-copy h1{font-size:1.55rem}.profile-copy p{font-size:.82rem}.profile-tag{font-size:.7rem}.stat{min-height:82px;padding:10px}.stat strong{font-size:1.2rem}.stat span{font-size:.73rem}.panel{padding:14px}.chart{gap:5px}.achievement{font-size:.75rem}}
   </style>
 </head>
 <body>
@@ -103,46 +140,53 @@
       const email = user.email || "Correo no registrado";
 
       content.innerHTML = `
-        <header class="page-heading">
-          <div><h1>Mi perfil</h1><p class="subtitle">Estadísticas y configuración de cuenta</p></div>
-          <div class="heading-badges"><span class="badge" data-mentor-badge></span><span class="badge streak">🔥 ${streak} días</span><span class="badge" aria-label="Notificaciones">🔔</span></div>
-        </header>
-        <div class="dashboard">
-          <section class="summary" aria-label="Resumen del jugador">
-            <div class="identity"><span class="avatar" role="img" aria-label="Espacio reservado para la imagen del mentor"></span><div><h2 data-profile-name></h2><p data-profile-email></p><p>Nivel ${level} · <span data-mentor-name></span></p></div></div>
-            <div class="level-line"><span>Nivel ${level}</span><span>${xp} / 100 XP</span></div>
-            <div class="xp-track" role="progressbar" aria-label="Experiencia del nivel" aria-valuenow="${xp}" aria-valuemin="0" aria-valuemax="100"><div class="xp-fill" style="width:${xp}%"></div></div>
-            <p class="xp-caption">Progreso para el siguiente nivel</p>
-          </section>
-          <section class="stats" aria-label="Estadísticas principales">
-            <div class="stat cyan"><strong>--</strong><span>Horas totales</span></div>
-            <div class="stat orange"><strong>${streak} días</strong><span>Racha actual</span></div>
-            <div class="stat green"><strong>--</strong><span>Tareas completadas</span></div>
-            <div class="stat purple"><strong>--</strong><span>Materia favorita</span></div>
-          </section>
-          <div class="lower-grid">
-            <section class="panel" aria-labelledby="studyTitle">
-              <h2 id="studyTitle">📊 Horas de estudio — esta semana</h2>
-              <div class="chart" role="img" aria-label="Gráfico semanal sin datos registrados">
-                <div class="chart-day"><span class="chart-bar"></span><span>L</span></div><div class="chart-day"><span class="chart-bar"></span><span>M</span></div><div class="chart-day"><span class="chart-bar"></span><span>X</span></div><div class="chart-day"><span class="chart-bar"></span><span>J</span></div><div class="chart-day"><span class="chart-bar"></span><span>V</span></div><div class="chart-day"><span class="chart-bar"></span><span>S</span></div><div class="chart-day"><span class="chart-bar"></span><span>D</span></div>
-              </div>
-              <p class="chart-note">El registro de actividad semanal aún no está disponible.</p>
-            </section>
-            <section class="panel" aria-labelledby="settingsTitle">
-              <h2 id="settingsTitle">⚙️ Configuración</h2>
-              <div class="settings">
-                <details class="setting"><summary>👤 Editar perfil</summary><div class="setting-body"><label for="editName">Nombre</label><input id="editName" maxlength="32"><label for="editEmail">Correo electrónico</label><input id="editEmail" type="email"><button type="button" id="saveProfile">Guardar cambios</button></div></details>
-                <details class="setting"><summary>🔒 Cambiar contraseña</summary><div class="setting-body">La contraseña no se almacena en esta demo. Conecta un servicio de autenticación para habilitar esta opción.</div></details>
-                <details class="setting"><summary>🌐 Idioma</summary><div class="setting-body"><label for="language">Idioma de la interfaz</label><select id="language"><option>Español</option></select></div></details>
-                <details class="setting"><summary>🔔 Notificaciones</summary><div class="setting-body"><label class="inline-control" for="notifications">Recordatorios de estudio<input id="notifications" type="checkbox"></label></div></details>
-                <details class="setting"><summary>🐾 Mentor virtual</summary><div class="setting-body"><label for="mentorSelect">Mentor seleccionado</label><select id="mentorSelect"><option value="panda-zen">Panda Zen</option><option value="zorro-spark">Zorro Spark</option><option value="gata-luna">Gata Luna</option><option value="tortuga-sage">Tortuga Sage</option></select><button type="button" id="saveMentor">Guardar mentor</button></div></details>
-                <details class="setting"><summary>🎨 Tema visual</summary><div class="setting-body"><label for="theme">Tema</label><select id="theme"><option value="map">Aventura del mapa</option></select></div></details>
-                <details class="setting"><summary>🚪 Cerrar sesión</summary><div class="setting-body">Se cerrará la sesión de este navegador.<br><button type="button" id="signOut">Cerrar sesión</button></div></details>
-              </div>
+        <header class="profile-hero" aria-labelledby="profileTitle">
+          <div class="profile-identity">
+            <span class="avatar" role="img" aria-label="Espacio reservado para la imagen del mentor"></span>
+            <div class="profile-copy">
+              <span class="profile-tag">🎒 Perfil del aventurero</span>
+              <h1 id="profileTitle">¡Hola, <span data-profile-name></span>!</h1>
+              <p data-profile-email></p>
+              <p class="mentor-line">🐾 <span data-mentor-name></span> · Nivel ${level}</p>
+            </div>
+          </div>
+          <div class="hero-aside">
+            <div class="heading-badges"><span class="badge" data-mentor-badge></span><span class="badge streak">🔥 ${streak} días</span><span class="badge" aria-label="Notificaciones">🔔</span></div>
+            <section class="hero-xp" aria-label="Experiencia del jugador">
+              <div class="level-line"><span>Nivel ${level}</span><span>${xp} / 100 XP</span></div>
+              <div class="xp-track" role="progressbar" aria-label="Experiencia del nivel" aria-valuenow="${xp}" aria-valuemin="0" aria-valuemax="100"><div class="xp-fill" style="width:${xp}%"></div></div>
+              <p class="xp-caption">Progreso para el siguiente nivel</p>
             </section>
           </div>
-          <section class="panel achievements" aria-labelledby="achievementsTitle"><h2 id="achievementsTitle">🏆 Logros recientes</h2><div class="achievement-list"><span class="achievement orange">Aún no hay logros</span><span class="achievement cyan">Sigue explorando el mapa</span><span class="achievement purple">Tu aventura comienza aquí</span></div></section>
-        </div>`;
+        </header>
+        <section class="stats" aria-label="Estadísticas principales">
+          <div class="stat cyan"><strong>--</strong><span>Horas totales</span></div>
+          <div class="stat orange"><strong>${streak} días</strong><span>Racha actual</span></div>
+          <div class="stat green"><strong>--</strong><span>Tareas completadas</span></div>
+          <div class="stat purple"><strong>--</strong><span>Materia favorita</span></div>
+        </section>
+        <div class="lower-grid">
+          <section class="panel" aria-labelledby="studyTitle">
+            <h2 id="studyTitle">📊 Horas de estudio — esta semana</h2>
+            <div class="chart" role="img" aria-label="Gráfico semanal sin datos registrados">
+              <div class="chart-day"><span class="chart-bar"></span><span>L</span></div><div class="chart-day"><span class="chart-bar"></span><span>M</span></div><div class="chart-day"><span class="chart-bar"></span><span>X</span></div><div class="chart-day"><span class="chart-bar"></span><span>J</span></div><div class="chart-day"><span class="chart-bar"></span><span>V</span></div><div class="chart-day"><span class="chart-bar"></span><span>S</span></div><div class="chart-day"><span class="chart-bar"></span><span>D</span></div>
+            </div>
+            <p class="chart-note">El registro de actividad semanal aún no está disponible.</p>
+          </section>
+          <section class="panel" aria-labelledby="settingsTitle">
+            <h2 id="settingsTitle">⚙️ Configuración</h2>
+            <div class="settings">
+              <details class="setting"><summary>👤 Editar perfil</summary><div class="setting-body"><label for="editName">Nombre</label><input id="editName" maxlength="32"><label for="editEmail">Correo electrónico</label><input id="editEmail" type="email"><button type="button" id="saveProfile">Guardar cambios</button></div></details>
+              <details class="setting"><summary>🔒 Cambiar contraseña</summary><div class="setting-body">La contraseña no se almacena en esta demo. Conecta un servicio de autenticación para habilitar esta opción.</div></details>
+              <details class="setting"><summary>🌐 Idioma</summary><div class="setting-body"><label for="language">Idioma de la interfaz</label><select id="language"><option>Español</option></select></div></details>
+              <details class="setting"><summary>🔔 Notificaciones</summary><div class="setting-body"><label class="inline-control" for="notifications">Recordatorios de estudio<input id="notifications" type="checkbox"></label></div></details>
+              <details class="setting"><summary>🐾 Mentor virtual</summary><div class="setting-body"><label for="mentorSelect">Mentor seleccionado</label><select id="mentorSelect"><option value="panda-zen">Panda Zen</option><option value="zorro-spark">Zorro Spark</option><option value="gata-luna">Gata Luna</option><option value="tortuga-sage">Tortuga Sage</option></select><button type="button" id="saveMentor">Guardar mentor</button></div></details>
+              <details class="setting"><summary>🎨 Tema visual</summary><div class="setting-body"><label for="theme">Tema</label><select id="theme"><option value="map">Aventura del mapa</option></select></div></details>
+              <details class="setting"><summary>🚪 Cerrar sesión</summary><div class="setting-body">Se cerrará la sesión de este navegador.<br><button type="button" id="signOut">Cerrar sesión</button></div></details>
+            </div>
+          </section>
+        </div>
+        <section class="panel achievements" aria-labelledby="achievementsTitle"><h2 id="achievementsTitle">🏆 Logros recientes</h2><div class="achievement-list"><span class="achievement orange">Aún no hay logros</span><span class="achievement cyan">Sigue explorando el mapa</span><span class="achievement purple">Tu aventura comienza aquí</span></div></section>`;
 
       content.querySelector("[data-profile-name]").textContent = profileName;
       content.querySelector("[data-profile-email]").textContent = email;
@@ -153,7 +197,7 @@
       content.querySelector("#notifications").checked = localStorage.getItem("studyPlayNotifications") === "true";
       content.querySelector("#mentorSelect").value = user.mentorId || "";
       const avatar = content.querySelector(".avatar");
-      if (user.mentorId === "zorro-spark") avatar.classList.add("zorro-spark");
+      if (["panda-zen", "zorro-spark", "gata-luna", "tortuga-sage"].includes(user.mentorId)) avatar.classList.add(user.mentorId);
       avatar.setAttribute("aria-label", user.mentorName ? `Mentor virtual: ${user.mentorName}` : "Espacio reservado para la imagen del mentor");
 
       content.querySelector("#saveProfile").addEventListener("click", () => {
