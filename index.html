@@ -219,6 +219,17 @@ Object.entries(materias).forEach(([id, m]) => {
   spot.innerHTML = `<span class="orb" style="--p:${m.progreso}"><b>${m.icono}</b></span><em>${m.nombre}</em>`;
   $("map").appendChild(spot);
 });
+
+const mentorSpot = document.createElement("a");
+mentorSpot.className = "spot";
+mentorSpot.href = "chat_mentor.html";
+mentorSpot.dataset.x = 82;
+mentorSpot.dataset.y = 72;
+mentorSpot.style.setProperty("--c", "#ef7b24");
+mentorSpot.setAttribute("aria-label", "Abrir chat del mentor");
+mentorSpot.innerHTML = '<span class="orb"><b>💬</b></span><em>Chat del mentor</em>';
+$("map").appendChild(mentorSpot);
+
 mapImage.addEventListener("load", positionSpots);
 window.addEventListener("resize", positionSpots);
 positionSpots();

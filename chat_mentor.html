@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat con el mentor · Study Play</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"Baloo 2",system-ui,sans-serif;color:#284652;background:#e9f8fa;font-synthesis:none;--navy:#294654;--cyan:#0c91a3;--orange:#ef7b24;--orange-deep:#b85618;--green:#4c9e50;--yellow:#ffc933;--sea:#35b6f0;--sea-d:#1683c9;--rock-d:#6b4f35;--math:#3358d6;--math-d:#233f9e;--wood:#a8683a;--wood-d:#6b3d1c;--cream:#fff3d6;--ink:#294654;--line:#c8d9dc}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;overflow-x:hidden;background:linear-gradient(#8fdcff,var(--sea) 40%,var(--sea-d));background-attachment:fixed}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    button,a,select{touch-action:manipulation}
+    :focus-visible{outline:3px solid #ffc933;outline-offset:3px}
+
+    .bar-top{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:12px;padding:8px 16px;background:var(--orange);color:#fff;border-bottom:4px solid var(--orange-deep);box-shadow:0 4px 0 var(--orange-deep)}
+    .logo{display:flex;align-items:center;gap:9px;font-size:1.15rem;font-weight:800;white-space:nowrap}
+    .fox{width:38px;height:38px;flex:none;display:grid;place-items:center;overflow:hidden;background:#091c4b;border:2px solid #fff;border-radius:10px;font-size:1.5rem}
+    .fox img{width:100%;height:100%;object-fit:cover}
+    .spacer{flex:1}
+    .chip{min-height:36px;display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;background:#fff;color:var(--ink);font-size:.85rem;font-weight:800;white-space:nowrap;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+    .chip.back{background:var(--math);color:#fff}.chip.here{background:var(--yellow)}
+    .avatar{width:42px;height:42px;display:grid;place-items:center;border:3px solid var(--cream);border-radius:11px;background:#dff2f5;font-size:1.1rem;font-weight:800}
+
+    .world{width:min(100% - 24px,1120px);margin:0 auto;padding:18px 0 40px;display:grid;gap:18px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:6px 14px;border:0;border-radius:13px;color:#fff;font-weight:800;cursor:pointer;transition:transform .12s,filter .12s}
+    .btn:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn:active{transform:translateY(3px)}
+    .btn.orange{background:var(--orange);box-shadow:0 5px 0 var(--orange-deep)}.btn.blue{background:var(--math);box-shadow:0 5px 0 var(--math-d)}.btn.gray{background:#dfe8ea;color:#40565d;box-shadow:0 5px 0 #b3c2c5}
+
+    /* Avatar del mentor */
+    .mav{width:44px;height:44px;flex:none;display:grid;place-items:center;background:#eaf6ff center/contain no-repeat;border:3px solid #fff;border-radius:14px;box-shadow:0 3px 0 var(--orange-deep);font-size:1.4rem}
+    .mav.zorro-spark{background-color:#091c4b;background-image:url("imagen_oficial_zorro_spark.jpg");background-blend-mode:screen}
+    .mav.panda-zen{background-image:url("imagen_oficial_panda_zen.jpg")}
+    .mav.gata-luna{background-image:url("imagen_oficial_gata_luna.jpg")}
+    .mav.tortuga-sage{background-image:url("imagen_oficial_tortuga_sage.jpg")}
+
+    .sign{position:relative;padding:20px 28px 20px 122px;display:grid;gap:7px;background:linear-gradient(120deg,#fff3d6 0%,#fff8e9 54%,#dff8ff 100%);border:3px solid #d9b98a;border-left:8px solid var(--orange);border-radius:18px;box-shadow:0 7px 0 var(--rock-d);color:var(--ink)}
+    .sign .mav{position:absolute;left:16px;top:50%;translate:0 -50%;width:84px;height:84px;font-size:2.6rem;border-radius:20px;border-width:4px;box-shadow:0 5px 0 var(--orange-deep);animation:bob 2.4s ease-in-out infinite}
+    .ribbon{display:inline-flex;width:max-content;max-width:100%;padding:4px 12px;background:#e2d1f5;border:1px solid #c4a8e7;border-radius:99px;color:#7542b7;font-size:.78rem;font-weight:800}
+    .sign h1{margin:0;color:var(--math-d);font-size:2.1rem;line-height:1.03}
+    .sign .sub{margin:0;color:#527482;font-weight:700}
+
+    .layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start}
+    .card{padding:16px 18px;background:#fffefa;border:4px solid #fff;border-radius:20px;box-shadow:0 6px 0 rgba(0,0,0,.16)}
+    .card h2{margin:0 0 10px;font-size:1.05rem}
+
+    /* Misiones */
+    .filters{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+    .filter{min-height:32px;padding:3px 12px;border:0;border-radius:99px;background:#dceef0;color:#547483;font-size:.8rem;font-weight:800;cursor:pointer}
+    .filter[aria-pressed=true]{background:var(--cyan);color:#fff;box-shadow:0 2px 0 #087281}
+    .tasks{display:grid;gap:7px;max-height:440px;overflow:auto;padding:2px}
+    .task{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;padding:9px 11px;text-align:left;background:#eff7f8;border:3px solid transparent;border-radius:14px;color:#3b565e;cursor:pointer}
+    .task:hover{background:#fff0d2}
+    .task[aria-pressed=true]{background:#fff;border-color:var(--yellow);box-shadow:0 0 0 3px #ffc93344}
+    .task .ic{font-size:1.2rem}.task strong{display:block;font-size:.88rem;line-height:1.1}.task small{color:#71878c;font-weight:700;font-size:.72rem}
+    .task.done strong{text-decoration:line-through;color:#8a9b9e}
+    .task .st{font-size:.7rem}
+    .empty{margin:0;padding:10px;color:#71868c;font-size:.88rem;font-weight:700}
+    .empty a{color:var(--math);text-decoration:underline}
+
+    /* Chat */
+    .chat{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;height:min(660px,calc(100vh - 150px));min-height:500px;padding:0;overflow:hidden}
+    .chat-head{display:flex;align-items:center;gap:11px;padding:12px 16px;background:var(--math);color:#fff}
+    .chat-head .mav{width:42px;height:42px;font-size:1.3rem}
+    .chat-head strong{display:block;line-height:1}.chat-head small{font-weight:700;opacity:.9}
+    .chat-head .btn{margin-left:auto;min-height:34px;padding:3px 12px;font-size:.8rem}
+    .ctx{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 14px;background:#fff0d2;border-bottom:3px solid #f3d19a;font-size:.85rem;font-weight:800;color:#8a4a16}
+    .ctx span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .ctx a,.ctx button{padding:2px 11px;border:0;border-radius:99px;background:#fff;color:var(--math-d);font-size:.78rem;font-weight:800;cursor:pointer;box-shadow:0 2px 0 #e0c27f}
+    .msgs{overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:16px;background:linear-gradient(#fffdf3,#fff6dc)}
+    .msg{display:flex;align-items:flex-end;gap:9px;max-width:86%}
+    .msg .mav{width:36px;height:36px;font-size:1.1rem;border-width:2px;box-shadow:0 2px 0 var(--orange-deep)}
+    .bubble{padding:9px 14px;border-radius:18px;font-weight:600;font-size:.95rem;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}
+    .msg.mentor .bubble{background:#fff;border:3px solid #f3d19a;border-bottom-left-radius:5px;color:var(--ink)}
+    .msg.user{align-self:flex-end;flex-direction:row-reverse}
+    .msg.user .bubble{background:var(--math);color:#fff;border-bottom-right-radius:5px;box-shadow:0 3px 0 var(--math-d)}
+    .dots{display:flex;gap:4px;padding:4px 2px}.dots i{width:8px;height:8px;border-radius:50%;background:#c49a5b;animation:blink 1s infinite}.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+    .quick{display:flex;gap:7px;overflow-x:auto;padding:8px 14px 2px;background:#fff6dc}
+    .quick button{flex:none;padding:5px 13px;border:2px solid #f3d19a;border-radius:99px;background:#fff;color:var(--wood-d);font-size:.82rem;font-weight:800;cursor:pointer;box-shadow:0 2px 0 #e0c27f}
+    .quick button:hover{background:#fff0d2}
+    .composer{display:flex;align-items:flex-end;gap:8px;padding:10px 14px 14px;background:#fff6dc}
+    .composer textarea{flex:1;min-height:46px;max-height:120px;padding:10px 14px;resize:none;border:3px solid #cfe6ec;border-radius:16px;background:#fff;color:var(--ink);font-weight:600}
+    .composer textarea:focus{border-color:var(--cyan);outline:none;box-shadow:0 0 0 3px #0c91a326}
+    .send{width:50px;height:50px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:var(--orange);color:#fff;font-size:1.3rem;font-weight:800;cursor:pointer;box-shadow:0 5px 0 var(--orange-deep)}
+    .send:disabled{opacity:.5;cursor:not-allowed}.send:not(:disabled):hover{filter:brightness(1.07)}
+
+    @keyframes bob{50%{transform:translateY(-6px)}}
+    @keyframes blink{50%{opacity:.25}}
+    @media(max-width:860px){.layout{grid-template-columns:1fr}.tasks{max-height:230px}.chat{height:600px}}
+    @media(max-width:560px){.chip.name,.chip.streak,.chip.map{display:none}.bar-top{gap:7px;padding:7px 10px}.chip{min-height:32px;padding:4px 8px;font-size:.75rem}.avatar{width:36px;height:36px}.sign{padding:88px 16px 17px}.sign .mav{left:14px;top:10px;translate:none;width:64px;height:64px;font-size:2rem}.sign h1{font-size:1.6rem}.msg{max-width:94%}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="bar-top">
+    <a class="logo" href="index.html#map" aria-label="Volver a la isla"><span class="fox"><img src="imagen_oficial_zorro_spark.jpg" alt="" onerror="this.replaceWith('🦊')"></span><span>STUDY PLAY</span></a>
+    <span class="spacer"></span>
+    <a class="chip map" href="index.html#map">🗺️ Mapa</a>
+    <a class="chip back" href="estudio.html">⏱ Pomodoro</a>
+    <span class="chip here" aria-current="page">💬 Mentor</span>
+    <span class="chip streak" id="streak">🔥 0 días</span>
+    <span class="chip name">🙂 <b id="navUserName">Invitado</b></span>
+    <a class="avatar" href="perfil.html" id="avatar" aria-label="Perfil">🙂</a>
+  </header>
+
+  <main class="world">
+    <section class="sign" aria-labelledby="title">
+      <span class="mav" id="signAvatar" aria-hidden="true"></span>
+      <span class="ribbon">💬 CHAT CON TU MENTOR</span>
+      <h1 id="title">Pregúntale a tu mentor</h1>
+      <p class="sub">Elige una misión y cuéntale en qué te trabas. Te guía paso a paso.</p>
+    </section>
+
+    <div class="layout">
+      <section class="card" aria-labelledby="tasksTitle">
+        <h2 id="tasksTitle">📚 Tus misiones</h2>
+        <div class="filters" id="filters" role="group" aria-label="Filtrar por materia"></div>
+        <div class="tasks" id="tasks"></div>
+      </section>
+
+      <section class="card chat" aria-label="Chat con el mentor">
+        <div class="chat-head"><span class="mav" id="headAvatar" aria-hidden="true"></span><div><strong id="headName">Tu mentor</strong><small>● En línea</small></div><button class="btn gray" type="button" id="clearChat">Limpiar chat</button></div>
+        <div class="ctx" id="ctx" hidden></div>
+        <div class="msgs" id="msgs" aria-live="polite"></div>
+        <div class="quick" id="quick"></div>
+        <form class="composer" id="form">
+          <textarea id="input" rows="1" maxlength="500" placeholder="Escribe tu pregunta…" aria-label="Mensaje para el mentor"></textarea>
+          <button class="send" type="submit" id="send" aria-label="Enviar">➤</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    /* Para conectar un servicio de IA real: escribe aquí la URL de tu backend.
+       Recibirá POST { question, mentor, task, tasks, history } y debe responder { reply: "..." }.
+       Si queda vacío, el mentor responde con las guías locales de este archivo. */
+    const MENTOR_API_URL = "";
+
+    const params = new URLSearchParams(location.search);
+    const user = (() => { try { return JSON.parse(localStorage.getItem("studyPlayUser") || "null"); } catch { return null; } })();
+    const owner = (user?.email || user?.nombre || "guest").toLowerCase();
+    const chatKey = `studyPlayChat:${owner}`;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const $ = id => document.getElementById(id);
+    const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+
+    const VOICES = {
+      "panda-zen": { name: "Panda Zen", hi: "Hola, respira hondo y vamos con calma.", cheer: "Respira. Un paso pequeño también es avance." },
+      "zorro-spark": { name: "Zorro Spark", hi: "¡Hola, explorador! ¡Vamos a por esa misión!", cheer: "¡Tú puedes! Una chispa de esfuerzo y arrancamos." },
+      "gata-luna": { name: "Gata Luna", hi: "Hola, estudiante. Con calma y curiosidad llegamos lejos.", cheer: "Ve a tu ritmo: lo importante es no soltar el hilo." },
+      "tortuga-sage": { name: "Tortuga Sage", hi: "Saludos. Despacio se llega lejos.", cheer: "Sin prisa pero sin pausa: lo vas a lograr." }
+    };
+    const mentorId = VOICES[user?.mentorId] ? user.mentorId : "";
+    const voice = VOICES[mentorId] || { name: user?.mentorName || "Tu mentor", hi: "¡Hola!", cheer: "¡Tú puedes! Empieza por lo más pequeño." };
+
+    const subjectNames = { matematicas: "Matemáticas" };
+    const subjectName = id => subjectNames[id] || (id.charAt(0).toUpperCase() + id.slice(1));
+    const STARS = { alta: 3, media: 2, baja: 1 };
+    const POMS = { alta: 3, media: 2, baja: 1 };
+
+    function loadTasks() {
+      const out = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i), m = key.match(/^studyPlayTasks:([^:]+):(.+)$/);
+        if (!m || m[2] !== owner) continue;
+        try { (JSON.parse(localStorage.getItem(key)) || []).forEach(t => out.push({ ...t, subjectId: m[1] })); } catch { /* ignorar datos dañados */ }
+      }
+      return out;
+    }
+    const tasks = loadTasks();
+    let selectedId = null;
+    let filter = tasks.some(t => t.subjectId === params.get("materia")) ? params.get("materia") : "all";
+    let history = (() => { try { return JSON.parse(localStorage.getItem(chatKey) || "[]"); } catch { return []; } })();
+    let busy = false;
+
+    const currentTask = () => tasks.find(t => `${t.subjectId}:${t.id}` === selectedId) || null;
+    function dueText(t) {
+      if (!t.due) return "sin fecha límite";
+      const days = Math.round((new Date(`${t.due}T12:00:00`) - new Date().setHours(12, 0, 0, 0)) / 864e5);
+      return days < 0 ? `venció hace ${-days} ${days === -1 ? "día" : "días"}` : days === 0 ? "vence hoy" : days === 1 ? "vence mañana" : `vence en ${days} días`;
+    }
+    const byUrgency = (a, b) => (a.due || "9999").localeCompare(b.due || "9999") || (STARS[b.priority] || 0) - (STARS[a.priority] || 0);
+
+    function setAvatar(node) { node.className = `${node.className.split(" ")[0]} ${mentorId}`.trim(); node.textContent = mentorId ? "" : "🐾"; }
+
+    /* ---------- Misiones ---------- */
+    function renderFilters() {
+      const box = $("filters"); box.replaceChildren();
+      ["all", ...new Set(tasks.map(t => t.subjectId))].forEach(id => {
+        const b = el("button", "filter", id === "all" ? "Todas" : subjectName(id));
+        b.type = "button"; b.setAttribute("aria-pressed", String(filter === id));
+        b.addEventListener("click", () => { filter = id; renderFilters(); renderTasks(); });
+        box.appendChild(b);
+      });
+    }
+    function renderTasks() {
+      const box = $("tasks"); box.replaceChildren();
+      if (!tasks.length) {
+        const p = el("p", "empty", "Aún no hay misiones registradas. Crea alguna en tus materias y aparecerán aquí. ");
+        const a = el("a", "", "Ir al mapa"); a.href = "index.html#map"; p.appendChild(a); box.appendChild(p); return;
+      }
+      tasks.filter(t => filter === "all" || t.subjectId === filter)
+        .sort((a, b) => Number(a.completed) - Number(b.completed) || byUrgency(a, b))
+        .forEach(t => {
+          const key = `${t.subjectId}:${t.id}`;
+          const b = el("button", `task${t.completed ? " done" : ""}`); b.type = "button";
+          b.setAttribute("aria-pressed", String(key === selectedId));
+          const info = el("span"); info.append(el("strong", "", t.title), el("small", "", `${subjectName(t.subjectId)} · ${t.completed ? "completada" : dueText(t)}`));
+          b.append(el("span", "ic", t.completed ? "✅" : "📝"), info, el("span", "st", "⭐".repeat(STARS[t.priority] || 1)));
+          b.addEventListener("click", () => pickTask(key));
+          box.appendChild(b);
+        });
+    }
+    function pickTask(key) {
+      selectedId = selectedId === key ? null : key;
+      renderTasks(); renderCtx(); renderQuick();
+      const t = currentTask();
+      if (t) addMsg("mentor", `Vamos con «${t.title}» (${subjectName(t.subjectId)}, ${"⭐".repeat(STARS[t.priority] || 1)}): ${dueText(t)}.\n¿Qué necesitas: empezar, una pista o un plan de estudio?`);
+    }
+    function renderCtx() {
+      const t = currentTask(), box = $("ctx"); box.replaceChildren(); box.hidden = !t;
+      if (!t) return;
+      const link = el("a", "", "⏱ Estudiar esto"); link.href = `estudio.html?materia=${encodeURIComponent(t.subjectId)}`;
+      const off = el("button", "", "Quitar"); off.type = "button"; off.addEventListener("click", () => pickTask(selectedId));
+      box.append(el("span", "", `📌 ${t.title}`), link, off);
+    }
+    function renderQuick() {
+      const box = $("quick"); box.replaceChildren();
+      (currentTask() ? ["¿Por dónde empiezo?", "Dame una pista", "Hazme un plan de estudio", "Explícalo más fácil", "Revisa mi idea"] : ["¿Qué hago primero?", "¿Qué entrego pronto?", "Mi avance", "Estoy cansado"])
+        .forEach(q => { const b = el("button", "", q); b.type = "button"; b.addEventListener("click", () => send(q)); box.appendChild(b); });
+    }
+
+    /* ---------- Chat ---------- */
+    function bubble(role, text) {
+      const row = el("div", `msg ${role}`);
+      if (role === "mentor") { const a = el("span", "mav"); setAvatar(a); row.appendChild(a); }
+      row.appendChild(el("div", "bubble", text)); return row;
+    }
+    function scrollDown() { const m = $("msgs"); m.scrollTop = m.scrollHeight; }
+    function addMsg(role, text) {
+      history.push({ role, text, ts: Date.now() }); history = history.slice(-60);
+      try { localStorage.setItem(chatKey, JSON.stringify(history)); } catch { /* sin espacio */ }
+      $("msgs").appendChild(bubble(role, text)); scrollDown();
+    }
+    function greet() { addMsg("mentor", `${voice.hi} Soy ${voice.name}. Elige una misión a la izquierda y cuéntame en qué te trabas.`); }
+    function renderAll() { const m = $("msgs"); m.replaceChildren(); history.forEach(h => m.appendChild(bubble(h.role, h.text))); if (!history.length) greet(); scrollDown(); }
+
+    /* ---------- Respuestas del mentor ---------- */
+    function topicTip(t) {
+      const s = `${t.title} ${t.subject || ""}`.toLowerCase();
+      if (/ecuaci|álgebra|algebra/.test(s)) return "Aísla la incógnita: lo que hagas de un lado de la igualdad, hazlo también del otro.";
+      if (/fracci|aritm/.test(s)) return "Busca un denominador común antes de sumar o restar, y simplifica al final.";
+      if (/geometr/.test(s)) return "Haz un dibujo y marca los datos que ya conoces; casi siempre aparece la fórmula que necesitas.";
+      if (/c[aá]lcul|derivad|integral|l[ií]mite/.test(s)) return "Identifica primero qué regla aplica (suma, producto, cadena) y luego calcula.";
+      if (/lectur|leer|resumen/.test(s)) return "Lee completo una vez, subraya las ideas principales y resúmelas en tres frases.";
+      if (/ensayo|redact|escrib/.test(s)) return "Haz un esquema: idea central, tres argumentos y cierre. Después escribe.";
+      return "Escribe en una línea qué te piden, qué datos tienes y qué te falta.";
+    }
+    function localMentor(q, t) {
+      const s = q.toLowerCase(), has = (...w) => w.some(x => s.includes(x));
+      const pending = tasks.filter(x => !x.completed).sort(byUrgency);
+      if (has("cansad", "estres", "agobi", "motiv", "no puedo", "ánimo", "animo")) return `${voice.cheer}\nProbemos 10 minutos con una sola tarea${t ? `: «${t.title}»` : ""}. Después decides si sigues.`;
+      if (has("avance", "progreso", "resumen", "cuántas", "cuantas")) {
+        const done = tasks.length - pending.length;
+        return tasks.length ? `Llevas ${done} de ${tasks.length} misiones completadas y te quedan ${pending.length}.${pending[0] ? `\nLa más urgente: «${pending[0].title}» (${subjectName(pending[0].subjectId)}, ${dueText(pending[0])}).` : "\n¡Las terminaste todas! 🏆"}` : "Todavía no veo misiones registradas. Crea una en tus materias y la revisamos.";
+      }
+      if (!t && has("primero", "prioridad", "urgente", "pronto", "entrega", "fecha", "cuándo", "cuando")) {
+        if (!pending.length) return "No tienes misiones pendientes. ¡Buen trabajo!";
+        return "Te propongo este orden:\n" + pending.slice(0, 3).map((x, i) => `${i + 1}. «${x.title}» (${subjectName(x.subjectId)}, ${dueText(x)})`).join("\n") + "\nToca una en la lista para trabajarla conmigo.";
+      }
+      if (!t) return has("hola", "buenas", "hey") ? `${voice.hi} ¿Con qué misión te ayudo?` : "Elige una misión en la lista de la izquierda y te ayudo con ella. También puedes preguntarme qué hacer primero o cómo vas.";
+      const n = POMS[t.priority] || 1;
+      if (has("plan", "organiza", "tiempo", "cuánto", "cuanto", "pomodoro")) return `Plan para «${t.title}» (${dueText(t)}):\n• ${n} ${n === 1 ? "bloque" : "bloques"} de 25 min con 5 min de descanso.\n• Bloque 1: entender lo que piden y anotar datos.\n• ${n > 1 ? "Bloque 2: resolver la parte principal.\n• " : ""}${n > 2 ? "Bloque 3: revisar y corregir.\n• " : ""}Al terminar, marca la misión como cumplida.\nUsa «⏱ Estudiar esto» arriba para abrir el temporizador.`;
+      if (has("pista", "atasc", "no entiendo", "ayuda", "difícil", "dificil", "trab")) return `Te doy una pista en vez de la respuesta, así aprendes más:\n${topicTip(t)}\n¿En qué paso exacto te quedas? Cuéntame lo que ya intentaste.`;
+      if (has("fácil", "facil", "explica", "simple", "ejemplo")) return `Hagámoslo simple. Divide «${t.title}» en tres preguntas:\n1. ¿Qué me piden?\n2. ¿Qué datos tengo?\n3. ¿Qué paso pequeño puedo hacer ya?\n${topicTip(t)}`;
+      if (has("revis", "correcto", "verific", "terminé", "termine", "listo", "mi idea")) return "Cuéntame tu idea o tu resultado con tus palabras y lo revisamos juntos. Antes de enviarlo, comprueba que respondiste justo lo que pedía el enunciado y que los pasos tienen sentido.";
+      if (has("empez", "comenz", "por dónde", "por donde", "cómo", "como")) return `Para empezar «${t.title}»:\n1. Lee el enunciado completo una vez.\n2. Anota qué te piden y con qué datos cuentas.\n3. Haz primero la parte más fácil.\n${topicTip(t)}`;
+      return `Sobre «${t.title}»: ${topicTip(t)}\n¿Quieres una pista, un plan de estudio o que revisemos tu idea?`;
+    }
+    async function askMentor(payload) {
+      if (MENTOR_API_URL) {
+        const res = await fetch(MENTOR_API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return (await res.json()).reply;
+      }
+      return localMentor(payload.question, payload.task);
+    }
+    async function send(text) {
+      text = text.trim(); if (!text || busy) return;
+      busy = true; $("send").disabled = true; addMsg("user", text); $("input").value = ""; autosize();
+      const typing = bubble("mentor", ""); const dots = el("div", "dots"); dots.append(el("i"), el("i"), el("i")); typing.querySelector(".bubble").appendChild(dots);
+      $("msgs").appendChild(typing); scrollDown();
+      let reply;
+      try { reply = await askMentor({ question: text, mentor: voice.name, task: currentTask(), tasks, history: history.slice(-10) }); }
+      catch { reply = "No pude responder ahora mismo. Inténtalo de nuevo en un momento."; }
+      if (!reduced) await delay(450 + Math.random() * 400);
+      typing.remove(); addMsg("mentor", reply || "¿Me lo cuentas de otra forma?");
+      busy = false; $("send").disabled = false; $("input").focus();
+    }
+    function autosize() { const i = $("input"); i.style.height = "auto"; i.style.height = Math.min(i.scrollHeight, 120) + "px"; }
+
+    $("form").addEventListener("submit", e => { e.preventDefault(); send($("input").value); });
+    $("input").addEventListener("input", autosize);
+    $("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send($("input").value); } });
+    $("clearChat").addEventListener("click", () => { history = []; try { localStorage.removeItem(chatKey); } catch { /* ok */ } renderAll(); });
+
+    /* ---------- Inicio ---------- */
+    setAvatar($("signAvatar")); setAvatar($("headAvatar"));
+    $("headName").textContent = voice.name;
+    $("title").textContent = `Pregúntale a ${voice.name}`;
+    if (user) {
+      $("navUserName").textContent = user.nombre;
+      const s = Number(user.racha) || 0; $("streak").textContent = `🔥 ${s} ${s === 1 ? "día" : "días"}`;
+      if (user.nombre) $("avatar").textContent = user.nombre.trim().charAt(0).toUpperCase();
+    }
+    renderFilters(); renderTasks(); renderCtx(); renderQuick(); renderAll();
+  </script>
+</body>
+</html>
